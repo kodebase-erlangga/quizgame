@@ -1,0 +1,182 @@
+[
+  {
+    "nomor": 1,
+    "soal": "Ibukota negara Indonesia adalah?",
+    "pilihan": ["Bandung", "Surabaya", "Jakarta", "Medan", "Semarang"],
+    "jawaban": "Jakarta"
+  },
+  {
+    "nomor": 2,
+    "soal": "Gunung tertinggi di dunia adalah?",
+    "pilihan": ["Kilimanjaro", "Elbrus", "Everest", "Aconcagua", "Denali"],
+    "jawaban": "Everest"
+  },
+  {
+    "nomor": 3,
+    "soal": "Planet terdekat dengan matahari adalah?",
+    "pilihan": ["Venus", "Mars", "Merkurius", "Bumi", "Saturnus"],
+    "jawaban": "Merkurius"
+  },
+  {
+    "nomor": 4,
+    "soal": "Siapa penemu lampu pijar?",
+    "pilihan": ["Isaac Newton", "Thomas Edison", "Albert Einstein", "Nikola Tesla", "Alexander Graham Bell"],
+    "jawaban": "Thomas Edison"
+  },
+  {
+    "nomor": 5,
+    "soal": "Lambang kimia air adalah?",
+    "pilihan": ["CO2", "O2", "H2O", "NaCl", "CH4"],
+    "jawaban": "H2O"
+  },
+  {
+    "nomor": 6,
+    "soal": "Negara dengan jumlah penduduk terbanyak di dunia?",
+    "pilihan": ["Amerika Serikat", "India", "Cina", "Indonesia", "Brazil"],
+    "jawaban": "Cina"
+  },
+  {
+    "nomor": 7,
+    "soal": "Benua terbesar di dunia adalah?",
+    "pilihan": ["Afrika", "Eropa", "Asia", "Australia", "Amerika"],
+    "jawaban": "Asia"
+  },
+  {
+    "nomor": 8,
+    "soal": "Siapa presiden pertama Indonesia?",
+    "pilihan": ["Soekarno", "Soeharto", "Habibie", "Megawati", "Jokowi"],
+    "jawaban": "Soekarno"
+  },
+  {
+    "nomor": 9,
+    "soal": "Hewan tercepat di darat adalah?",
+    "pilihan": ["Kuda", "Cheetah", "Singa", "Kangguru", "Serigala"],
+    "jawaban": "Cheetah"
+  },
+  {
+    "nomor": 10,
+    "soal": "Mata uang negara Jepang adalah?",
+    "pilihan": ["Yen", "Won", "Dollar", "Rupiah", "Ringgit"],
+    "jawaban": "Yen"
+  },
+  {
+    "nomor": 11,
+    "soal": "Pulau terbesar di Indonesia adalah?",
+    "pilihan": ["Sumatera", "Jawa", "Kalimantan", "Sulawesi", "Papua"],
+    "jawaban": "Kalimantan"
+  },
+  {
+    "nomor": 12,
+    "soal": "Siapa penemu telepon?",
+    "pilihan": ["Thomas Edison", "Nikola Tesla", "Alexander Graham Bell", "James Watt", "Michael Faraday"],
+    "jawaban": "Alexander Graham Bell"
+  },
+  {
+    "nomor": 13,
+    "soal": "Sungai terpanjang di dunia adalah?",
+    "pilihan": ["Amazon", "Nil", "Yangtze", "Mississippi", "Ciliwung"],
+    "jawaban": "Nil"
+  },
+  {
+    "nomor": 14,
+    "soal": "Negara terkecil di dunia adalah?",
+    "pilihan": ["Monako", "San Marino", "Vatikan", "Liechtenstein", "Andorra"],
+    "jawaban": "Vatikan"
+  },
+  {
+    "nomor": 15,
+    "soal": "Benda langit yang mengelilingi bumi adalah?",
+    "pilihan": ["Matahari", "Mars", "Bulan", "Venus", "Jupiter"],
+    "jawaban": "Bulan"
+  },
+  {
+    "nomor": 16,
+    "soal": "Organ terbesar pada tubuh manusia adalah?",
+    "pilihan": ["Jantung", "Kulit", "Paru-paru", "Hati", "Ginjal"],
+    "jawaban": "Kulit"
+  },
+  {
+    "nomor": 17,
+    "soal": "Ibukota negara Australia adalah?",
+    "pilihan": ["Sydney", "Melbourne", "Canberra", "Perth", "Brisbane"],
+    "jawaban": "Canberra"
+  },
+  {
+    "nomor": 18,
+    "soal": "Berapakah jumlah provinsi di Indonesia pada tahun 2023?",
+    "pilihan": ["34", "35", "36", "37", "38"],
+    "jawaban": "38"
+  },
+  {
+    "nomor": 19,
+    "soal": "Siapa penulis novel Harry Potter?",
+    "pilihan": ["J.K. Rowling", "Suzanne Collins", "Stephen King", "Agatha Christie", "Dan Brown"],
+    "jawaban": "J.K. Rowling"
+  },
+  {
+    "nomor": 20,
+    "soal": "Berapakah jumlah planet di tata surya?",
+    "pilihan": ["7", "8", "9", "10", "11"],
+    "jawaban": "8"
+  },
+  {
+    "nomor": 21,
+    "soal": "Siapa presiden Amerika Serikat ke-16?",
+    "pilihan": ["George Washington", "Abraham Lincoln", "John F. Kennedy", "Barack Obama", "Donald Trump"],
+    "jawaban": "Abraham Lincoln"
+  },
+  {
+    "nomor": 22,
+    "soal": "Berapakah jumlah pulau di Indonesia (kurang lebih)?",
+    "pilihan": ["13.000", "14.000", "15.000", "16.000", "17.000"],
+    "jawaban": "17.000"
+  },
+  {
+    "nomor": 23,
+    "soal": "Siapa penemu pesawat terbang?",
+    "pilihan": ["Wright bersaudara", "Thomas Edison", "Nikola Tesla", "James Watt", "Alexander Graham Bell"],
+    "jawaban": "Wright bersaudara"
+  },
+  {
+    "nomor": 24,
+    "soal": "Berapakah jumlah warna pada pelangi?",
+    "pilihan": ["5", "6", "7", "8", "9"],
+    "jawaban": "7"
+  },
+  {
+    "nomor": 25,
+    "soal": "Siapa penemu komputer pertama kali?",
+    "pilihan": ["Charles Babbage", "Alan Turing", "Bill Gates", "Steve Jobs", "Mark Zuckerberg"],
+    "jawaban": "Charles Babbage"
+  },
+  {
+    "nomor": 26,
+    "soal": "Negara dengan luas wilayah terbesar di dunia?",
+    "pilihan": ["Kanada", "Amerika Serikat", "Cina", "Rusia", "Australia"],
+    "jawaban": "Rusia"
+  },
+  {
+    "nomor": 27,
+    "soal": "Siapa pelukis terkenal dari Italia yang melukis Mona Lisa?",
+    "pilihan": ["Leonardo da Vinci", "Michelangelo", "Raphael", "Donatello", "Caravaggio"],
+    "jawaban": "Leonardo da Vinci"
+  },
+  {
+    "nomor": 28,
+    "soal": "Apa nama samudra terbesar di dunia?",
+    "pilihan": ["Atlantik", "Hindia", "Arktik", "Pasifik", "Antartika"],
+    "jawaban": "Pasifik"
+  },
+  {
+    "nomor": 29,
+    "soal": "Siapa ilmuwan yang mengemukakan teori evolusi?",
+    "pilihan": ["Isaac Newton", "Charles Darwin", "Albert Einstein", "Galileo Galilei", "Louis Pasteur"],
+    "jawaban": "Charles Darwin"
+  },
+  {
+    "nomor": 30,
+    "soal": "Apa nama alat musik tradisional dari Jawa Barat?",
+    "pilihan": ["Angklung", "Gamelan", "Sasando", "Kolintang", "Tifa"],
+    "jawaban": "Angklung"
+  }
+]

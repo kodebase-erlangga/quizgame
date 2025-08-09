@@ -1,0 +1,182 @@
+[
+  {
+    "nomor": 1,
+    "soal": "Kitab suci agama Islam adalah?",
+    "pilihan": ["Alkitab", "Weda", "Tripitaka", "Al-Qur'an", "Taurat"],
+    "jawaban": "Al-Qur'an"
+  },
+  {
+    "nomor": 2,
+    "soal": "Hari raya umat Hindu disebut?",
+    "pilihan": ["Natal", "Nyepi", "Waisak", "Idul Fitri", "Imlek"],
+    "jawaban": "Nyepi"
+  },
+  {
+    "nomor": 3,
+    "soal": "Tempat ibadah umat Buddha adalah?",
+    "pilihan": ["Masjid", "Gereja", "Vihara", "Pura", "Sinagoga"],
+    "jawaban": "Vihara"
+  },
+  {
+    "nomor": 4,
+    "soal": "Nabi terakhir dalam agama Islam adalah?",
+    "pilihan": ["Nabi Musa", "Nabi Isa", "Nabi Ibrahim", "Nabi Muhammad", "Nabi Nuh"],
+    "jawaban": "Nabi Muhammad"
+  },
+  {
+    "nomor": 5,
+    "soal": "Hari besar umat Kristen untuk memperingati kelahiran Yesus Kristus adalah?",
+    "pilihan": ["Paskah", "Natal", "Waisak", "Nyepi", "Idul Adha"],
+    "jawaban": "Natal"
+  },
+  {
+    "nomor": 6,
+    "soal": "Kitab suci agama Kristen adalah?",
+    "pilihan": ["Alkitab", "Weda", "Tripitaka", "Al-Qur'an", "Taurat"],
+    "jawaban": "Alkitab"
+  },
+  {
+    "nomor": 7,
+    "soal": "Hari raya umat Buddha disebut?",
+    "pilihan": ["Natal", "Nyepi", "Waisak", "Idul Fitri", "Imlek"],
+    "jawaban": "Waisak"
+  },
+  {
+    "nomor": 8,
+    "soal": "Tempat ibadah umat Hindu adalah?",
+    "pilihan": ["Masjid", "Gereja", "Vihara", "Pura", "Sinagoga"],
+    "jawaban": "Pura"
+  },
+  {
+    "nomor": 9,
+    "soal": "Nabi yang menerima wahyu Taurat adalah?",
+    "pilihan": ["Nabi Musa", "Nabi Isa", "Nabi Ibrahim", "Nabi Muhammad", "Nabi Nuh"],
+    "jawaban": "Nabi Musa"
+  },
+  {
+    "nomor": 10,
+    "soal": "Hari besar umat Islam untuk merayakan kemenangan setelah puasa adalah?",
+    "pilihan": ["Paskah", "Natal", "Waisak", "Nyepi", "Idul Fitri"],
+    "jawaban": "Idul Fitri"
+  },
+  {
+    "nomor": 11,
+    "soal": "Kitab suci agama Hindu adalah?",
+    "pilihan": ["Alkitab", "Weda", "Tripitaka", "Al-Qur'an", "Taurat"],
+    "jawaban": "Weda"
+  },
+  {
+    "nomor": 12,
+    "soal": "Hari raya umat Kristen untuk memperingati kebangkitan Yesus Kristus adalah?",
+    "pilihan": ["Paskah", "Natal", "Waisak", "Nyepi", "Idul Adha"],
+    "jawaban": "Paskah"
+  },
+  {
+    "nomor": 13,
+    "soal": "Tempat ibadah umat Kristen adalah?",
+    "pilihan": ["Masjid", "Gereja", "Vihara", "Pura", "Sinagoga"],
+    "jawaban": "Gereja"
+  },
+  {
+    "nomor": 14,
+    "soal": "Nabi yang menerima wahyu Injil adalah?",
+    "pilihan": ["Nabi Musa", "Nabi Isa", "Nabi Ibrahim", "Nabi Muhammad", "Nabi Nuh"],
+    "jawaban": "Nabi Isa"
+  },
+  {
+    "nomor": 15,
+    "soal": "Hari besar umat Islam untuk berkurban adalah?",
+    "pilihan": ["Paskah", "Natal", "Waisak", "Nyepi", "Idul Adha"],
+    "jawaban": "Idul Adha"
+  },
+  {
+    "nomor": 16,
+    "soal": "Kitab suci agama Buddha adalah?",
+    "pilihan": ["Alkitab", "Weda", "Tripitaka", "Al-Qur'an", "Taurat"],
+    "jawaban": "Tripitaka"
+  },
+  {
+    "nomor": 17,
+    "soal": "Hari raya umat Islam yang jatuh pada bulan Dzulhijjah adalah?",
+    "pilihan": ["Paskah", "Natal", "Waisak", "Nyepi", "Idul Adha"],
+    "jawaban": "Idul Adha"
+  },
+  {
+    "nomor": 18,
+    "soal": "Tempat ibadah umat Yahudi adalah?",
+    "pilihan": ["Masjid", "Gereja", "Vihara", "Pura", "Sinagoga"],
+    "jawaban": "Sinagoga"
+  },
+  {
+    "nomor": 19,
+    "soal": "Nabi yang menerima wahyu Zabur adalah?",
+    "pilihan": ["Nabi Daud", "Nabi Isa", "Nabi Ibrahim", "Nabi Muhammad", "Nabi Nuh"],
+    "jawaban": "Nabi Daud"
+  },
+  {
+    "nomor": 20,
+    "soal": "Hari besar umat Hindu untuk menyambut tahun baru Saka adalah?",
+    "pilihan": ["Paskah", "Natal", "Waisak", "Nyepi", "Idul Adha"],
+    "jawaban": "Nyepi"
+  },
+  {
+    "nomor": 21,
+    "soal": "Kitab suci agama Yahudi adalah?",
+    "pilihan": ["Alkitab", "Weda", "Tripitaka", "Al-Qur'an", "Taurat"],
+    "jawaban": "Taurat"
+  },
+  {
+    "nomor": 22,
+    "soal": "Hari besar umat Buddha untuk memperingati kelahiran, pencerahan, dan wafatnya Buddha adalah?",
+    "pilihan": ["Paskah", "Natal", "Waisak", "Nyepi", "Idul Adha"],
+    "jawaban": "Waisak"
+  },
+  {
+    "nomor": 23,
+    "soal": "Tempat ibadah umat Islam adalah?",
+    "pilihan": ["Masjid", "Gereja", "Vihara", "Pura", "Sinagoga"],
+    "jawaban": "Masjid"
+  },
+  {
+    "nomor": 24,
+    "soal": "Nabi yang menerima wahyu Al-Qur'an adalah?",
+    "pilihan": ["Nabi Musa", "Nabi Isa", "Nabi Ibrahim", "Nabi Muhammad", "Nabi Nuh"],
+    "jawaban": "Nabi Muhammad"
+  },
+  {
+    "nomor": 25,
+    "soal": "Hari besar umat Kristen untuk memperingati kenaikan Yesus Kristus ke surga adalah?",
+    "pilihan": ["Paskah", "Natal", "Waisak", "Kenaikan Isa Almasih", "Idul Adha"],
+    "jawaban": "Kenaikan Isa Almasih"
+  },
+  {
+    "nomor": 26,
+    "soal": "Kitab suci agama Islam diturunkan dalam bahasa?",
+    "pilihan": ["Ibrani", "Arab", "Sansekerta", "Latin", "Yunani"],
+    "jawaban": "Arab"
+  },
+  {
+    "nomor": 27,
+    "soal": "Hari besar umat Islam yang menandai berakhirnya bulan Ramadan adalah?",
+    "pilihan": ["Paskah", "Natal", "Waisak", "Nyepi", "Idul Fitri"],
+    "jawaban": "Idul Fitri"
+  },
+  {
+    "nomor": 28,
+    "soal": "Tempat ibadah umat Hindu di Bali disebut?",
+    "pilihan": ["Masjid", "Gereja", "Vihara", "Pura", "Sinagoga"],
+    "jawaban": "Pura"
+  },
+  {
+    "nomor": 29,
+    "soal": "Nabi yang menerima wahyu Weda adalah?",
+    "pilihan": ["Nabi Musa", "Nabi Isa", "Nabi Ibrahim", "Nabi Muhammad", "Tidak ada"],
+    "jawaban": "Tidak ada"
+  },
+  {
+    "nomor": 30,
+    "soal": "Hari besar umat Kristen untuk memperingati turunnya Roh Kudus adalah?",
+    "pilihan": ["Paskah", "Natal", "Pentakosta", "Nyepi", "Idul Adha"],
+    "jawaban": "Pentakosta"
+  }
+]

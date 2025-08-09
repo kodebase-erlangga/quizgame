@@ -1,0 +1,182 @@
+[
+  {
+    "nomor": 1,
+    "soal": "Perangkat keras komputer yang berfungsi menampilkan output berupa gambar adalah?",
+    "pilihan": ["Monitor", "Keyboard", "Mouse", "Printer", "Scanner"],
+    "jawaban": "Monitor"
+  },
+  {
+    "nomor": 2,
+    "soal": "Sistem operasi yang berbasis open source adalah?",
+    "pilihan": ["Windows", "Linux", "MacOS", "DOS", "iOS"],
+    "jawaban": "Linux"
+  },
+  {
+    "nomor": 3,
+    "soal": "Singkatan dari CPU adalah?",
+    "pilihan": ["Central Processing Unit", "Computer Personal Unit", "Central Print Unit", "Control Processing Unit", "Central Program Unit"],
+    "jawaban": "Central Processing Unit"
+  },
+  {
+    "nomor": 4,
+    "soal": "Perangkat lunak untuk mengolah kata adalah?",
+    "pilihan": ["Microsoft Word", "Microsoft Excel", "CorelDraw", "Photoshop", "PowerPoint"],
+    "jawaban": "Microsoft Word"
+  },
+  {
+    "nomor": 5,
+    "soal": "Jaringan komputer yang mencakup wilayah sangat luas disebut?",
+    "pilihan": ["LAN", "MAN", "WAN", "PAN", "SAN"],
+    "jawaban": "WAN"
+  },
+  {
+    "nomor": 6,
+    "soal": "Perangkat keras komputer yang berfungsi sebagai otak komputer adalah?",
+    "pilihan": ["RAM", "CPU", "Harddisk", "Monitor", "Mouse"],
+    "jawaban": "CPU"
+  },
+  {
+    "nomor": 7,
+    "soal": "Perangkat lunak untuk presentasi adalah?",
+    "pilihan": ["Microsoft Word", "Microsoft Excel", "PowerPoint", "CorelDraw", "Photoshop"],
+    "jawaban": "PowerPoint"
+  },
+  {
+    "nomor": 8,
+    "soal": "Jaringan komputer dalam satu gedung disebut?",
+    "pilihan": ["LAN", "MAN", "WAN", "PAN", "SAN"],
+    "jawaban": "LAN"
+  },
+  {
+    "nomor": 9,
+    "soal": "Perangkat keras untuk mencetak dokumen adalah?",
+    "pilihan": ["Monitor", "Keyboard", "Mouse", "Printer", "Scanner"],
+    "jawaban": "Printer"
+  },
+  {
+    "nomor": 10,
+    "soal": "Perangkat lunak pengolah angka adalah?",
+    "pilihan": ["Microsoft Word", "Microsoft Excel", "PowerPoint", "CorelDraw", "Photoshop"],
+    "jawaban": "Microsoft Excel"
+  },
+  {
+    "nomor": 11,
+    "soal": "Perangkat keras untuk memasukkan data berupa suara adalah?",
+    "pilihan": ["Monitor", "Keyboard", "Microphone", "Printer", "Scanner"],
+    "jawaban": "Microphone"
+  },
+  {
+    "nomor": 12,
+    "soal": "Perangkat keras untuk menyimpan data secara permanen adalah?",
+    "pilihan": ["RAM", "CPU", "Harddisk", "Monitor", "Mouse"],
+    "jawaban": "Harddisk"
+  },
+  {
+    "nomor": 13,
+    "soal": "Perangkat lunak untuk menggambar adalah?",
+    "pilihan": ["Microsoft Word", "Microsoft Excel", "PowerPoint", "CorelDraw", "Photoshop"],
+    "jawaban": "CorelDraw"
+  },
+  {
+    "nomor": 14,
+    "soal": "Jaringan komputer yang mencakup satu kota disebut?",
+    "pilihan": ["LAN", "MAN", "WAN", "PAN", "SAN"],
+    "jawaban": "MAN"
+  },
+  {
+    "nomor": 15,
+    "soal": "Perangkat keras untuk menampilkan output berupa suara adalah?",
+    "pilihan": ["Monitor", "Speaker", "Mouse", "Printer", "Scanner"],
+    "jawaban": "Speaker"
+  },
+  {
+    "nomor": 16,
+    "soal": "Perangkat keras untuk menggerakkan kursor di layar adalah?",
+    "pilihan": ["Monitor", "Keyboard", "Mouse", "Printer", "Scanner"],
+    "jawaban": "Mouse"
+  },
+  {
+    "nomor": 17,
+    "soal": "Perangkat lunak untuk mengedit foto adalah?",
+    "pilihan": ["Microsoft Word", "Microsoft Excel", "PowerPoint", "CorelDraw", "Photoshop"],
+    "jawaban": "Photoshop"
+  },
+  {
+    "nomor": 18,
+    "soal": "Perangkat keras untuk memasukkan data berupa gambar adalah?",
+    "pilihan": ["Monitor", "Keyboard", "Mouse", "Printer", "Scanner"],
+    "jawaban": "Scanner"
+  },
+  {
+    "nomor": 19,
+    "soal": "Perangkat keras untuk menyimpan data sementara adalah?",
+    "pilihan": ["RAM", "CPU", "Harddisk", "Monitor", "Mouse"],
+    "jawaban": "RAM"
+  },
+  {
+    "nomor": 20,
+    "soal": "Perangkat keras untuk menghubungkan komputer dengan jaringan internet adalah?",
+    "pilihan": ["Modem", "Monitor", "Keyboard", "Printer", "Scanner"],
+    "jawaban": "Modem"
+  },
+  {
+    "nomor": 21,
+    "soal": "Perangkat keras untuk memasukkan data berupa huruf dan angka adalah?",
+    "pilihan": ["Monitor", "Keyboard", "Mouse", "Printer", "Scanner"],
+    "jawaban": "Keyboard"
+  },
+  {
+    "nomor": 22,
+    "soal": "Perangkat keras untuk menampilkan output berupa cetakan adalah?",
+    "pilihan": ["Monitor", "Keyboard", "Mouse", "Printer", "Scanner"],
+    "jawaban": "Printer"
+  },
+  {
+    "nomor": 23,
+    "soal": "Perangkat lunak untuk membuat animasi adalah?",
+    "pilihan": ["Microsoft Word", "Microsoft Excel", "PowerPoint", "CorelDraw", "Macromedia Flash"],
+    "jawaban": "Macromedia Flash"
+  },
+  {
+    "nomor": 24,
+    "soal": "Perangkat keras untuk menghubungkan komputer dengan perangkat lain adalah?",
+    "pilihan": ["USB", "Monitor", "Keyboard", "Printer", "Scanner"],
+    "jawaban": "USB"
+  },
+  {
+    "nomor": 25,
+    "soal": "Perangkat keras untuk menyimpan data dalam bentuk optik adalah?",
+    "pilihan": ["CD", "RAM", "CPU", "Harddisk", "Monitor"],
+    "jawaban": "CD"
+  },
+  {
+    "nomor": 26,
+    "soal": "Perangkat lunak untuk membuat dokumen presentasi adalah?",
+    "pilihan": ["Microsoft Word", "Microsoft Excel", "PowerPoint", "CorelDraw", "Photoshop"],
+    "jawaban": "PowerPoint"
+  },
+  {
+    "nomor": 27,
+    "soal": "Perangkat keras untuk menghubungkan komputer dengan jaringan lokal adalah?",
+    "pilihan": ["LAN Card", "Monitor", "Keyboard", "Printer", "Scanner"],
+    "jawaban": "LAN Card"
+  },
+  {
+    "nomor": 28,
+    "soal": "Perangkat keras untuk menyimpan data dalam bentuk flash adalah?",
+    "pilihan": ["Flashdisk", "RAM", "CPU", "Harddisk", "Monitor"],
+    "jawaban": "Flashdisk"
+  },
+  {
+    "nomor": 29,
+    "soal": "Perangkat lunak untuk mengedit video adalah?",
+    "pilihan": ["Microsoft Word", "Microsoft Excel", "PowerPoint", "CorelDraw", "Adobe Premiere"],
+    "jawaban": "Adobe Premiere"
+  },
+  {
+    "nomor": 30,
+    "soal": "Perangkat keras untuk menghubungkan komputer dengan jaringan nirkabel adalah?",
+    "pilihan": ["WiFi Adapter", "Monitor", "Keyboard", "Printer", "Scanner"],
+    "jawaban": "WiFi Adapter"
+  }
+]

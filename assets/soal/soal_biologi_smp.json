@@ -1,0 +1,182 @@
+[
+  {
+    "nomor": 1,
+    "soal": "Organisme yang mampu membuat makanannya sendiri disebut?",
+    "pilihan": ["Heterotrof", "Autotrof", "Parasit", "Saprofit", "Karnivora"],
+    "jawaban": "Autotrof"
+  },
+  {
+    "nomor": 2,
+    "soal": "Bagian tumbuhan yang berfungsi sebagai tempat fotosintesis adalah?",
+    "pilihan": ["Akar", "Batang", "Daun", "Bunga", "Buah"],
+    "jawaban": "Daun"
+  },
+  {
+    "nomor": 3,
+    "soal": "Proses perubahan ulat menjadi kupu-kupu disebut?",
+    "pilihan": ["Metamorfosis", "Fotosintesis", "Respirasi", "Transpirasi", "Fermentasi"],
+    "jawaban": "Metamorfosis"
+  },
+  {
+    "nomor": 4,
+    "soal": "Alat pernapasan pada ikan adalah?",
+    "pilihan": ["Paru-paru", "Insang", "Trakea", "Kulit", "Spirakel"],
+    "jawaban": "Insang"
+  },
+  {
+    "nomor": 5,
+    "soal": "Bagian terkecil dari makhluk hidup disebut?",
+    "pilihan": ["Jaringan", "Organ", "Sel", "Sistem organ", "Molekul"],
+    "jawaban": "Sel"
+  },
+  {
+    "nomor": 6,
+    "soal": "Hewan yang berkembang biak dengan bertelur disebut?",
+    "pilihan": ["Vivipar", "Ovipar", "Ovovivipar", "Mamalia", "Reptil"],
+    "jawaban": "Ovipar"
+  },
+  {
+    "nomor": 7,
+    "soal": "Proses penguapan air dari daun tumbuhan disebut?",
+    "pilihan": ["Fotosintesis", "Transpirasi", "Respirasi", "Fermentasi", "Difusi"],
+    "jawaban": "Transpirasi"
+  },
+  {
+    "nomor": 8,
+    "soal": "Bagian darah yang berfungsi mengangkut oksigen adalah?",
+    "pilihan": ["Leukosit", "Trombosit", "Eritrosit", "Plasma darah", "Serum"],
+    "jawaban": "Eritrosit"
+  },
+  {
+    "nomor": 9,
+    "soal": "Alat indera manusia yang berfungsi untuk mendengar adalah?",
+    "pilihan": ["Mata", "Telinga", "Hidung", "Lidah", "Kulit"],
+    "jawaban": "Telinga"
+  },
+  {
+    "nomor": 10,
+    "soal": "Hewan yang mengalami metamorfosis sempurna adalah?",
+    "pilihan": ["Kupu-kupu", "Belalang", "Kecoa", "Capung", "Nyamuk"],
+    "jawaban": "Kupu-kupu"
+  },
+  {
+    "nomor": 11,
+    "soal": "Bagian tumbuhan yang berfungsi menyerap air dan mineral?",
+    "pilihan": ["Akar", "Batang", "Daun", "Bunga", "Buah"],
+    "jawaban": "Akar"
+  },
+  {
+    "nomor": 12,
+    "soal": "Organ pernapasan pada manusia adalah?",
+    "pilihan": ["Paru-paru", "Jantung", "Lambung", "Hati", "Ginjal"],
+    "jawaban": "Paru-paru"
+  },
+  {
+    "nomor": 13,
+    "soal": "Bagian mata yang berfungsi mengatur banyaknya cahaya yang masuk?",
+    "pilihan": ["Kornea", "Lensa", "Iris", "Retina", "Sklera"],
+    "jawaban": "Iris"
+  },
+  {
+    "nomor": 14,
+    "soal": "Hewan yang berkembang biak dengan melahirkan disebut?",
+    "pilihan": ["Ovipar", "Vivipar", "Ovovivipar", "Amfibi", "Reptil"],
+    "jawaban": "Vivipar"
+  },
+  {
+    "nomor": 15,
+    "soal": "Proses pembuatan makanan pada tumbuhan disebut?",
+    "pilihan": ["Fotosintesis", "Respirasi", "Transpirasi", "Fermentasi", "Difusi"],
+    "jawaban": "Fotosintesis"
+  },
+  {
+    "nomor": 16,
+    "soal": "Bagian tubuh manusia yang berfungsi memompa darah?",
+    "pilihan": ["Paru-paru", "Jantung", "Lambung", "Hati", "Ginjal"],
+    "jawaban": "Jantung"
+  },
+  {
+    "nomor": 17,
+    "soal": "Bagian tumbuhan yang berfungsi sebagai alat reproduksi?",
+    "pilihan": ["Akar", "Batang", "Daun", "Bunga", "Buah"],
+    "jawaban": "Bunga"
+  },
+  {
+    "nomor": 18,
+    "soal": "Bagian otak yang mengatur keseimbangan tubuh?",
+    "pilihan": ["Serebrum", "Serebelum", "Medula", "Pons", "Hipotalamus"],
+    "jawaban": "Serebelum"
+  },
+  {
+    "nomor": 19,
+    "soal": "Bagian sel yang berfungsi sebagai pusat pengendali sel?",
+    "pilihan": ["Sitoplasma", "Nukleus", "Ribosom", "Mitokondria", "Membran sel"],
+    "jawaban": "Nukleus"
+  },
+  {
+    "nomor": 20,
+    "soal": "Hewan yang hidup di dua alam disebut?",
+    "pilihan": ["Mamalia", "Reptil", "Amfibi", "Aves", "Pisces"],
+    "jawaban": "Amfibi"
+  },
+  {
+    "nomor": 21,
+    "soal": "Bagian tumbuhan yang berfungsi mengangkut air dan mineral?",
+    "pilihan": ["Floem", "Xilem", "Epidermis", "Kambium", "Stomata"],
+    "jawaban": "Xilem"
+  },
+  {
+    "nomor": 22,
+    "soal": "Bagian tubuh manusia yang berfungsi menyaring darah?",
+    "pilihan": ["Paru-paru", "Jantung", "Lambung", "Hati", "Ginjal"],
+    "jawaban": "Ginjal"
+  },
+  {
+    "nomor": 23,
+    "soal": "Bagian tumbuhan yang berfungsi mengangkut hasil fotosintesis?",
+    "pilihan": ["Floem", "Xilem", "Epidermis", "Kambium", "Stomata"],
+    "jawaban": "Floem"
+  },
+  {
+    "nomor": 24,
+    "soal": "Bagian tubuh manusia yang berfungsi sebagai alat ekskresi?",
+    "pilihan": ["Paru-paru", "Jantung", "Lambung", "Hati", "Ginjal"],
+    "jawaban": "Ginjal"
+  },
+  {
+    "nomor": 25,
+    "soal": "Bagian sel yang berfungsi menghasilkan energi?",
+    "pilihan": ["Sitoplasma", "Nukleus", "Ribosom", "Mitokondria", "Membran sel"],
+    "jawaban": "Mitokondria"
+  },
+  {
+    "nomor": 26,
+    "soal": "Bagian tumbuhan yang berfungsi sebagai tempat cadangan makanan?",
+    "pilihan": ["Akar", "Batang", "Daun", "Bunga", "Buah"],
+    "jawaban": "Buah"
+  },
+  {
+    "nomor": 27,
+    "soal": "Bagian tubuh manusia yang berfungsi sebagai alat peraba?",
+    "pilihan": ["Mata", "Telinga", "Hidung", "Lidah", "Kulit"],
+    "jawaban": "Kulit"
+  },
+  {
+    "nomor": 28,
+    "soal": "Bagian tumbuhan yang berfungsi sebagai tempat pertukaran gas?",
+    "pilihan": ["Akar", "Batang", "Daun", "Bunga", "Stomata"],
+    "jawaban": "Stomata"
+  },
+  {
+    "nomor": 29,
+    "soal": "Bagian tubuh manusia yang berfungsi sebagai alat penglihatan?",
+    "pilihan": ["Mata", "Telinga", "Hidung", "Lidah", "Kulit"],
+    "jawaban": "Mata"
+  },
+  {
+    "nomor": 30,
+    "soal": "Bagian tumbuhan yang berfungsi sebagai tempat menyimpan air?",
+    "pilihan": ["Akar", "Batang", "Daun", "Bunga", "Buah"],
+    "jawaban": "Akar"
+  }
+]
