@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quizgame/pages/kuis/spinner/spin_soal.dart';
+import 'package:quizgame/pages/kuis/spinner/spin_soal_refactored.dart';
 import 'package:quizgame/pages/mode.dart';
 import 'package:quizgame/pages/mode/single/panduan_single.dart';
 

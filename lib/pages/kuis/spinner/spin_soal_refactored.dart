@@ -4,6 +4,7 @@ import 'models/spin_soal_model.dart';
 import 'controllers/spin_soal_controller.dart';
 import 'widgets/spin_wheel_widget.dart';
 import 'widgets/spin_info_widgets.dart';
+import 'widgets/question_popup.dart';
 import 'utils/dialog_utils.dart';
 
 class SpinSoal extends StatefulWidget {
@@ -140,7 +141,6 @@ class _SpinSoalState extends State<SpinSoal> {
                                   ],
                                 ),
                               ),
-
                               Container(
                                 width: 2,
                                 height: double.infinity,
@@ -149,7 +149,6 @@ class _SpinSoalState extends State<SpinSoal> {
                                 ),
                                 color: Colors.white.withOpacity(0.3),
                               ),
-
                               Expanded(flex: 1, child: _buildMainContent()),
                             ],
                           ),
@@ -254,8 +253,7 @@ class _SpinSoalState extends State<SpinSoal> {
         isSpinning: _controller.isSpinning,
         fortuneStream: _controller.fortuneStream,
         onTap: () => _controller.spinWheel(() => setState(() {}), context),
-        onAnimationEnd: () =>
-            _controller.onAnimationEnd(() => setState(() {}), context),
+        onAnimationEnd: () => _handleSpinAnimationEnd(),
       );
     }
 
@@ -273,5 +271,26 @@ class _SpinSoalState extends State<SpinSoal> {
     }
 
     return const SizedBox.shrink();
+  }
+
+  void _handleSpinAnimationEnd() async {
+    _controller.onAnimationEnd(() => setState(() {}), context);
+
+    if (_controller.selectedQuestion != null && mounted) {
+      await QuestionPopup.show(
+        context,
+        questionNumber: _controller.selectedQuestion!,
+        autoClose: true,
+        autoCloseDuration: const Duration(seconds: 3),
+      );
+
+      // Navigate to question after popup closes
+      if (mounted) {
+        _controller.answerQuestion(
+          context,
+          onStateUpdate: () => setState(() {}),
+        );
+      }
+    }
   }
 }

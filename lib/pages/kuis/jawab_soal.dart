@@ -138,9 +138,8 @@ class _JawabSoalState extends State<JawabSoal> {
           });
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: isSelected
-              ? const Color(0xFFFF8C42)
-              : const Color(0xFF8A56F1),
+          backgroundColor:
+              isSelected ? const Color(0xFFFF8C42) : const Color(0xFF8A56F1),
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
@@ -188,64 +187,121 @@ class _JawabSoalState extends State<JawabSoal> {
 
     // Show feedback dialog
     showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (dialogContext) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        backgroundColor: Colors.white,
-        title: Text(
-          benar ? 'Benar!' : 'Salah!',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: benar ? const Color(0xFF4CAF50) : const Color(0xFFF44336),
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-            fontFamily: 'Poppins',
-          ),
-        ),
-        content: Text(
-          benar
-              ? 'Jawaban Anda benar.'
-              : 'Jawaban Anda salah.\nJawaban yang benar: ${soal!["jawaban"]}',
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 16, fontFamily: 'Poppins'),
-        ),
-        actions: [
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () async {
-                // Close the dialog first using dialog context
-                Navigator.pop(dialogContext);
-                // Small delay to ensure dialog is fully closed
-                await Future.delayed(const Duration(milliseconds: 100));
-                // Then close the JawabSoal screen using the widget context
-                if (mounted) {
-                  Navigator.pop(context);
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF8A56F1),
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+        context: context,
+        barrierDismissible: false,
+        builder: (dialogContext) => Dialog(
+              backgroundColor: Colors.transparent,
+              child: Container(
+                width: 302,
+                height: 400,
+                padding: const EdgeInsets.all(40),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    border:
+                        Border.all(color: const Color(0xFFFEFFE8), width: 8),
+                    color: benar
+                        ? const Color(0xFF459D93)
+                        : const Color(0xffEA4C37)),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Image.asset(
+                      benar
+                          ? 'assets/images/jawabBenar.png'
+                          : 'assets/images/jawabSalah.png',
+                      width: 184,
+                      height: 115,
+                    ),
+                    const SizedBox(height: 24),
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(22, 14, 22, 14),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color:
+                            benar ? const Color(0xFF459D93) : Color(0xff763F37),
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            benar
+                                ? 'jawaban kamu\nbenar'
+                                : 'jawaban kamu\nsalah',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'Straw Milky',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              height: 2.0,
+                            ),
+                          ),
+                          // if (!benar) ...[
+                          //   const SizedBox(height: 8),
+                          //   Text(
+                          //     'Jawaban yang benar:\n${soal!["jawaban"]}',
+                          //     textAlign: TextAlign.center,
+                          //     style: const TextStyle(
+                          //       color: Colors.white,
+                          //       fontFamily: 'Straw Milky',
+                          //       fontSize: 16,
+                          //       fontWeight: FontWeight.w400,
+                          //       height: 2.0,
+                          //     ),
+                          //   ),
+                          // ],
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: const Color(0xFFFFAA0D),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Color(0xFFDA9006),
+                              offset: Offset(0, -6),
+                              blurRadius: 0,
+                              // inset: true,
+                            ),
+                          ],
+                        ),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            Navigator.pop(dialogContext);
+                            await Future.delayed(
+                                const Duration(milliseconds: 100));
+                            if (mounted) {
+                              Navigator.pop(context);
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            foregroundColor: Colors.white,
+                            shadowColor: Colors.transparent,
+                            padding: const EdgeInsets.fromLTRB(55, 15, 55, 20),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            elevation: 0,
+                          ),
+                          child: const Text(
+                            'Selanjutnya',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Poppins',
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              child: const Text(
-                'Lanjutkan',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Poppins',
-                ),
-              ),
-            ),
-          ),
-        ],
-        actionsPadding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
-      ),
-    );
+            ));
   }
 
   @override

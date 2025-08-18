@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quizgame/pages/kuis/spinner/spin_soal_refactored.dart';
 import '../../kuis/spinner/spin_nama.dart';
-import '../../kuis/spinner/spin_soal.dart';
 import 'battle_game_manager.dart';
 
 class BattleGameScreen extends StatefulWidget {

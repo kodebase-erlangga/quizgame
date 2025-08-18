@@ -83,9 +83,8 @@ class SpinSoalController {
     _isSpinning = false;
     setState();
 
-    if (_selectedQuestion != null && _currentSoal != null) {
-      answerQuestion(context, onStateUpdate: setState);
-    }
+    // Tidak langsung navigasi ke answerQuestion
+    // Biarkan widget yang memanggil method ini yang mengatur popup dan navigasi
   }
 
   void answerQuestion(BuildContext context, {VoidCallback? onStateUpdate}) {
