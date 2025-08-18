@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart' as fortune;
 import 'spin_soal_refactored.dart';
+import 'widgets/name_popup.dart';
 
 class SpinNama extends StatefulWidget {
   final String mode;
@@ -30,10 +31,8 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
   List<String> _availableNames = [];
   String? _selectedName;
   bool _isSpinning = false;
-  int? _selectedIndex; // Menambahkan variabel untuk menyimpan index terpilih
-  List<int> _globalAvailableQuestions =
-      []; // Menyimpan soal yang tersisa secara global
-  // Fortune wheel controller
+  int? _selectedIndex;
+  List<int> _globalAvailableQuestions = [];
   StreamController<int>? _fortuneWheelController;
 
   @override
@@ -42,18 +41,15 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
     _availableNames = List.from(widget.availableNames);
     _fortuneWheelController = StreamController<int>();
 
-    // Inisialisasi soal yang tersedia berdasarkan mode
     _globalAvailableQuestions = _generateQuestionsForMode();
 
-    // Auto-select when there's only one name available
     if (_availableNames.length == 1) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) {
           setState(() {
             _selectedName = _availableNames[0];
           });
-          // Langsung ke halaman jawab soal tanpa delay
-          _continueToNextStep();
+          _showSingleNamePopupAndContinue();
         }
       });
     }
@@ -77,19 +73,14 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
       _selectedIndex = null;
     });
 
-    // Select a random index and add it to the fortune wheel controller
     final random = Random();
     final index = random.nextInt(_availableNames.length);
     _selectedIndex = index; // Simpan index yang dipilih
 
-    // Trigger the wheel animation
     _fortuneWheelController?.add(index);
-
-    // Note: Nama akan dipilih di onAnimationEnd untuk sinkronisasi yang tepat
   }
 
   void _showNoNamesDialog() {
-    // Langsung ke halaman hasil tanpa menampilkan dialog
     if (widget.onAllNamesComplete != null) {
       widget.onAllNamesComplete!();
     } else {
@@ -98,7 +89,6 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
   }
 
   void _showAllQuestionsCompletedDialog() {
-    // Langsung ke halaman hasil tanpa menampilkan dialog
     if (widget.onAllNamesComplete != null) {
       widget.onAllNamesComplete!();
     } else {
@@ -110,21 +100,14 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
     List<int> questions;
     if (widget.mode == 'collaboration') {
       if (widget.removeAfterSpin) {
-        // Mode "sesuai siswa": jumlah soal = jumlah siswa
-        // Setiap siswa menjawab 1 soal, lalu nama siswa dihapus
         final totalStudents = widget.availableNames.length;
         questions = List.generate(totalStudents, (i) => i + 1);
       } else {
-        // Mode "tetap 30": 30 soal tersedia, nama tidak dihapus
-        // Siswa bisa menjawab berulang kali sampai 30 soal habis
         questions = List.generate(30, (i) => i + 1);
       }
     } else if (widget.mode == 'battle') {
-      // Mode battle: 30 soal tersedia untuk semua tim
-      // Soal yang dihapus, nama tim tetap (bisa menjawab lebih dari 1 soal)
       questions = List.generate(30, (i) => i + 1);
     } else {
-      // Mode lainnya, gunakan default
       questions = List.generate(30, (i) => i + 1);
     }
     return questions;
@@ -143,19 +126,15 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
               availableQuestions: List.from(_globalAvailableQuestions),
               onAllQuestionsComplete: () {
                 if (mounted) {
-                  // Kembali ke halaman spin nama setelah selesai menjawab soal
                   Navigator.of(context).pop();
                 }
               },
             ),
           ),
         ).then((answeredQuestionNumber) {
-          // Setelah kembali dari SpinSoal, persiapkan untuk spin berikutnya
           if (mounted) {
             if (widget.mode == 'collaboration') {
-              // Mode collaboration: gunakan removeAfterSpin untuk menentukan behavior
               if (widget.removeAfterSpin) {
-                // Sesuai siswa: hapus nama dan soal
                 setState(() {
                   _availableNames.remove(_selectedName);
                   if (answeredQuestionNumber != null) {
@@ -165,7 +144,6 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
                   _selectedIndex = null;
                 });
               } else {
-                // Tetap 30: nama tidak dihapus, hanya soal yang dihapus
                 setState(() {
                   if (answeredQuestionNumber != null) {
                     _globalAvailableQuestions.remove(answeredQuestionNumber);
@@ -175,7 +153,6 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
                 });
               }
             } else if (widget.mode == 'battle') {
-              // Mode battle: hapus soal, nama tetap di daftar
               setState(() {
                 if (answeredQuestionNumber != null) {
                   _globalAvailableQuestions.remove(answeredQuestionNumber);
@@ -184,7 +161,6 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
                 _selectedIndex = null;
               });
             } else {
-              // Mode lainnya gunakan removeAfterSpin
               if (widget.removeAfterSpin) {
                 setState(() {
                   _availableNames.remove(_selectedName);
@@ -205,68 +181,59 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
               }
             }
 
-            // Cek kondisi akhir game berdasarkan mode
             if (widget.mode == 'collaboration') {
               if (widget.removeAfterSpin) {
-                // Mode "sesuai siswa": game selesai ketika semua nama habis (setiap siswa sudah menjawab)
                 if (_availableNames.isEmpty) {
                   _showNoNamesDialog();
                 } else if (_availableNames.length == 1) {
-                  // Jika tinggal 1 nama, langsung pilih dan lanjut ke soal
                   Future.delayed(const Duration(milliseconds: 500), () {
                     if (mounted) {
                       setState(() {
                         _selectedName = _availableNames[0];
                       });
-                      _continueToNextStep();
+                      _showSingleNamePopupAndContinue();
                     }
                   });
                 }
               } else {
-                // Mode "tetap 30": game selesai ketika semua soal habis
                 if (_globalAvailableQuestions.isEmpty) {
                   _showAllQuestionsCompletedDialog();
                 } else if (_availableNames.length == 1) {
-                  // Jika tinggal 1 nama, langsung pilih dan lanjut ke soal
                   Future.delayed(const Duration(milliseconds: 500), () {
                     if (mounted) {
                       setState(() {
                         _selectedName = _availableNames[0];
                       });
-                      _continueToNextStep();
+                      _showSingleNamePopupAndContinue();
                     }
                   });
                 }
               }
             } else if (widget.mode == 'battle') {
-              // Mode battle: game selesai ketika semua soal habis
               if (_globalAvailableQuestions.isEmpty) {
                 _showAllQuestionsCompletedDialog();
               } else if (_availableNames.length == 1) {
-                // Jika tinggal 1 nama, langsung pilih dan lanjut ke soal
                 Future.delayed(const Duration(milliseconds: 500), () {
                   if (mounted) {
                     setState(() {
                       _selectedName = _availableNames[0];
                     });
-                    _continueToNextStep();
+                    _showSingleNamePopupAndContinue();
                   }
                 });
               }
             } else {
-              // Mode lainnya
               if (_availableNames.isEmpty) {
                 _showNoNamesDialog();
               } else if (_globalAvailableQuestions.isEmpty) {
                 _showAllQuestionsCompletedDialog();
               } else if (_availableNames.length == 1) {
-                // Jika tinggal 1 nama, langsung pilih dan lanjut ke soal
                 Future.delayed(const Duration(milliseconds: 500), () {
                   if (mounted) {
                     setState(() {
                       _selectedName = _availableNames[0];
                     });
-                    _continueToNextStep();
+                    _showSingleNamePopupAndContinue();
                   }
                 });
               }
@@ -276,8 +243,23 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
       } else if (widget.onNameSelected != null) {
         widget.onNameSelected!(_selectedName!);
       }
-    } else {
-      // _selectedName adalah null, tidak bisa melanjutkan
+    } else {}
+  }
+
+  void _showSingleNamePopupAndContinue() async {
+    if (_selectedName != null) {
+      // Show popup for single name
+      await NamePopup.show(
+        context,
+        selectedName: _selectedName!,
+        autoClose: true,
+        autoCloseDuration: const Duration(seconds: 3),
+      );
+
+      // Continue to next step after popup
+      if (mounted) {
+        _continueToNextStep();
+      }
     }
   }
 
@@ -325,9 +307,9 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
   }
 
   Widget _buildInstructionText() {
-    return Text(
+    return const Text(
       'Klik spin wheel dibawah ini untuk memilih nama',
-      style: const TextStyle(
+      style: TextStyle(
         fontStyle: FontStyle.normal,
         fontFamily: 'Satoshi',
         fontSize: 15,
@@ -434,8 +416,6 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
               child: _buildSpinningWheel(),
             ),
           ),
-          // if (_selectedName != null && !_isSpinning)
-          // _buildSelectedNameDisplay(),
         ],
       );
     }
@@ -463,44 +443,6 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
     return const SizedBox.shrink();
   }
 
-  // Widget _buildSelectedNameDisplay() {
-  //   return Container(
-  //     margin: const EdgeInsets.only(top: 20),
-  //     padding: const EdgeInsets.all(16),
-  //     decoration: BoxDecoration(
-  //       color: Colors.white.withOpacity(0.9),
-  //       borderRadius: BorderRadius.circular(12),
-  //       boxShadow: [
-  //         BoxShadow(
-  //           color: Colors.black.withOpacity(0.1),
-  //           blurRadius: 10,
-  //           offset: const Offset(0, 4),
-  //         ),
-  //       ],
-  //     ),
-  //     child: Column(
-  //       children: [
-  //         const Icon(Icons.check_circle, color: Colors.green, size: 32),
-  //         const SizedBox(height: 8),
-  //         const Text(
-  //           'Nama Terpilih:',
-  //           style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-  //         ),
-  //         const SizedBox(height: 4),
-  //         Text(
-  //           _selectedName!,
-  //           style: const TextStyle(
-  //             fontSize: 18,
-  //             fontWeight: FontWeight.bold,
-  //             color: Colors.green,
-  //           ),
-  //           textAlign: TextAlign.center,
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
   Widget _buildSpinningWheel() {
     final List<Color> wheelColors = [
       Colors.purple.shade500,
@@ -513,9 +455,8 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
       Colors.pink.shade500,
     ];
 
-    // If there's only one name, show it without the wheel
     if (_availableNames.length == 1) {
-      final colorIndex = 0; // Use first color for single item
+      final colorIndex = 0;
       return Container(
         width: 250,
         height: 250,
@@ -619,30 +560,38 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
           duration: const Duration(seconds: 2),
           curve: Curves.decelerate,
         ),
-        onAnimationEnd: () {
-          if (mounted && _selectedIndex != null) {
-            // Pilih nama berdasarkan index yang sudah ditentukan
-            final selectedName = _availableNames[_selectedIndex!];
-
-            setState(() {
-              _isSpinning = false;
-              _selectedName = selectedName;
-            });
-
-            // Langsung lanjut ke spin soal setelah nama dipilih
-            Future.delayed(const Duration(milliseconds: 300), () {
-              if (mounted) {
-                _continueToNextStep();
-              }
-            });
-          }
-        },
+        onAnimationEnd: () => _handleSpinAnimationEnd(),
         styleStrategy: fortune.UniformStyleStrategy(
           borderWidth: 4,
           borderColor: Colors.white,
         ),
       ),
     );
+  }
+
+  void _handleSpinAnimationEnd() async {
+    if (mounted && _selectedIndex != null) {
+      // Pilih nama berdasarkan index yang sudah ditentukan
+      final selectedName = _availableNames[_selectedIndex!];
+
+      setState(() {
+        _isSpinning = false;
+        _selectedName = selectedName;
+      });
+
+      // Tampilkan popup nama terpilih
+      await NamePopup.show(
+        context,
+        selectedName: selectedName,
+        autoClose: true,
+        autoCloseDuration: const Duration(seconds: 3),
+      );
+
+      // Lanjutkan ke spin soal setelah popup selesai
+      if (mounted) {
+        _continueToNextStep();
+      }
+    }
   }
 
   Future<bool?> _showExitConfirmationDialog() async {

@@ -65,14 +65,29 @@ class _SpinSoalState extends State<SpinSoal> {
           _controller.initializeForSingleQuestion(() => setState(() {})).then((
             _,
           ) {
-            // ignore: use_build_context_synchronously
-            _controller.answerQuestion(
-              context,
-              onStateUpdate: () => setState(() {}),
-            );
+            _showSingleQuestionPopupAndContinue();
           });
         }
       });
+    }
+  }
+
+  void _showSingleQuestionPopupAndContinue() async {
+    if (_controller.selectedQuestion != null && mounted) {
+      await QuestionPopup.show(
+        context,
+        questionNumber: _controller.selectedQuestion!,
+        autoClose: true,
+        autoCloseDuration: const Duration(seconds: 3),
+      );
+
+      // Navigate to question after popup closes
+      if (mounted) {
+        _controller.answerQuestion(
+          context,
+          onStateUpdate: () => setState(() {}),
+        );
+      }
     }
   }
 

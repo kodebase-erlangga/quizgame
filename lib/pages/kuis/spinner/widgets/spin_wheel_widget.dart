@@ -24,14 +24,6 @@ class SpinWheelWidget extends StatelessWidget {
       Color(0xFFFFAA0D),
       Color(0xFFEA4C37),
       Color(0xFF459D93),
-      // Colors.purple.shade500,
-      // Colors.blue.shade500,
-      // Colors.teal.shade500,
-      // Colors.green.shade500,
-      // Colors.amber.shade500,
-      // Colors.orange.shade500,
-      // Colors.red.shade500,
-      // Colors.pink.shade500,
     ];
 
     // If there's only one question, show it without the wheel
