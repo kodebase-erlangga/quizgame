@@ -18,7 +18,13 @@ class HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(color: Color(0xffFEFFE8)),
+        decoration: const BoxDecoration(
+          color: Color(0xffFEFFE8),
+          image: DecorationImage(
+            image: AssetImage('assets/images/bg_line.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Stack(
           children: [
             Column(
@@ -28,7 +34,6 @@ class HomeState extends State<Home> {
                 SizedBox(height: 80),
               ],
             ),
-
             Positioned(
               bottom: 0,
               left: 0,
@@ -151,7 +156,7 @@ class HomeState extends State<Home> {
                         child: TextFormField(
                           controller: namaController,
                           decoration: InputDecoration(
-                            hintText: 'Ex : Ihsan',
+                            hintText: 'Contoh : Ihsan',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(40),
                               borderSide: BorderSide(color: Color(0xFF444444)),
@@ -199,7 +204,7 @@ class HomeState extends State<Home> {
                                 mode: 'single',
                                 currentPlayer: namaController.text.trim(),
                                 availableQuestions: List.generate(
-                                  30,
+                                  5,
                                   (index) => index + 1,
                                 ),
                                 onAllQuestionsComplete: () {
@@ -211,7 +216,7 @@ class HomeState extends State<Home> {
                                       'point': 0,
                                       'benar': 0,
                                       'salah': 0,
-                                      'total': 30,
+                                      'total': 5,
                                     },
                                   );
                                 },

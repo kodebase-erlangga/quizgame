@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:quizgame/pages/mode.dart';
 
 class JawabSoal extends StatefulWidget {
   final int nomorSoal;
@@ -45,118 +46,136 @@ class _JawabSoalState extends State<JawabSoal> {
     });
   }
 
-  Widget _buildProgressBar() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Progress indicator text
-        Padding(
-          padding: const EdgeInsets.only(bottom: 4.0),
-          child: Row(
+  Widget _buildQuestionCard() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12, left: 200, right: 200),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
-              const Icon(Icons.timer_outlined, color: Colors.white70, size: 14),
-              const SizedBox(width: 4),
-              Text(
-                'Sisa soal',
+              Image.asset(
+                'assets/images/target.png',
+                width: 26,
+                height: 26,
+              ),
+              const SizedBox(width: 15),
+              const Text(
+                'Soal',
+                textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.white.withOpacity(0.7),
-                  fontFamily: 'Poppins',
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                  fontStyle: FontStyle.normal,
+                  fontFamily: 'Straw Milky',
                 ),
               ),
             ],
           ),
-        ),
-        // Progress bar
-        Container(
-          margin: const EdgeInsets.only(bottom: 24),
-          height: 4,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: const Color(0xFF7446D8),
-            borderRadius: BorderRadius.circular(2),
-          ),
-          child: FractionallySizedBox(
-            alignment: Alignment.centerLeft,
-            widthFactor: progressValue.clamp(0.0, 1.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFFFF8C42),
-                borderRadius: BorderRadius.circular(2),
+          const SizedBox(height: 30),
+          Container(
+            width: 548,
+            constraints: const BoxConstraints(
+              minHeight: 72,
+            ),
+            padding: const EdgeInsets.fromLTRB(40, 20, 40, 20),
+            decoration: BoxDecoration(
+              color: const Color(0XFF459D93),
+              borderRadius: BorderRadius.circular(17),
+              border: Border.all(
+                color: Colors.black,
+                width: 2,
+              ),
+            ),
+            child: Text(
+              soal!["soal"],
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w700,
+                fontStyle: FontStyle.normal,
+                color: Colors.white,
+                fontFamily: 'Satoshi',
               ),
             ),
           ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildQuestionCard() {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 24),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
         ],
-      ),
-      padding: const EdgeInsets.all(24),
-      child: Text(
-        soal!["soal"],
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: Color(0xFF39258F),
-          fontFamily: 'Poppins',
-        ),
       ),
     );
   }
 
   Widget _buildAnswerButton(int index) {
     final bool isSelected = selectedIndex == index;
+    final String optionLetter =
+        String.fromCharCode(65 + index); // A, B, C, D, E...
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {
+      margin: const EdgeInsets.only(bottom: 12, left: 200, right: 200),
+      // width: double.infinity,
+      constraints: const BoxConstraints(
+        minWidth: 200, // Tambahkan min width
+      ),
+      child: InkWell(
+        onTap: () {
           setState(() {
             selectedIndex = index;
           });
 
-          // Auto-submit after a short delay when an answer is selected
           Future.delayed(const Duration(milliseconds: 500), () {
             _submitAnswer();
           });
         },
-        style: ElevatedButton.styleFrom(
-          backgroundColor:
-              isSelected ? const Color(0xFFFF8C42) : const Color(0xFF8A56F1),
-          foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-            side: BorderSide(
-              color: isSelected ? Colors.transparent : Colors.white,
+        borderRadius: BorderRadius.circular(38),
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(8, 8, 18, 8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(38),
+            border: Border.all(
+              color: isSelected
+                  ? const Color(0xFF459D93)
+                  : const Color(0xFFFFE2AD),
               width: 1,
             ),
+            color: isSelected ? const Color(0xFF459D93) : Colors.white,
           ),
-          elevation: isSelected ? 3 : 1,
-        ),
-        child: Text(
-          soal!["pilihan"][index],
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            fontFamily: 'Poppins',
+          child: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? const Color(0xFFFFAA0D)
+                      : const Color(0xFFFFE2AD),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Center(
+                  child: Text(
+                    optionLetter,
+                    style: TextStyle(
+                      color:
+                          isSelected ? Colors.white : const Color(0xFF444444),
+                      fontFamily: 'Satoshi',
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Flexible(
+                child: Text(
+                  soal!["pilihan"][index],
+                  style: TextStyle(
+                    color: isSelected ? Colors.white : const Color(0xFF444444),
+                    fontFamily: 'Satoshi',
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -185,7 +204,6 @@ class _JawabSoalState extends State<JawabSoal> {
       print('DEBUG JawabSoal: WARNING - onAnswered callback is null!');
     }
 
-    // Show feedback dialog
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -235,20 +253,6 @@ class _JawabSoalState extends State<JawabSoal> {
                               height: 2.0,
                             ),
                           ),
-                          // if (!benar) ...[
-                          //   const SizedBox(height: 8),
-                          //   Text(
-                          //     'Jawaban yang benar:\n${soal!["jawaban"]}',
-                          //     textAlign: TextAlign.center,
-                          //     style: const TextStyle(
-                          //       color: Colors.white,
-                          //       fontFamily: 'Straw Milky',
-                          //       fontSize: 16,
-                          //       fontWeight: FontWeight.w400,
-                          //       height: 2.0,
-                          //     ),
-                          //   ),
-                          // ],
                         ],
                       ),
                     ),
@@ -304,65 +308,76 @@ class _JawabSoalState extends State<JawabSoal> {
             ));
   }
 
+  Widget _buildAppBar(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Row(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: IconButton(
+              icon: Image.asset(
+                'assets/images/icon_back.png',
+                height: 54.0,
+                width: 54.0,
+              ),
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ModePermainan(),
+                  ),
+                  (route) => false,
+                );
+              },
+            ),
+          ),
+          const Spacer(),
+          Image.asset(
+            'assets/images/Quizverse.png',
+            width: 153,
+            height: 47,
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (loading || soal == null) {
-      return Scaffold(
-        backgroundColor: const Color(0xFF8A56F1),
-        body: const Center(
+      return const Scaffold(
+        backgroundColor: Color(0xffFEFFE8),
+        body: Center(
           child: CircularProgressIndicator(color: Colors.white),
         ),
       );
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xFF8A56F1),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
+      body: Container(
+        decoration: const BoxDecoration(
+          color: Color(0xffFEFFE8),
+          image: DecorationImage(
+            image: AssetImage('assets/images/bg_line.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // App Bar
-              Row(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: () => Navigator.pop(context),
-                      tooltip: 'Kembali',
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      'Question ${soal!["nomor"]}',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontFamily: 'Poppins',
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.more_vert, color: Colors.white),
-                    onPressed: () {},
-                  ),
-                ],
+              _buildAppBar(context),
+              const SizedBox(
+                height: 78,
               ),
-
-              // Progress Bar
-              _buildProgressBar(),
-
-              // Question Card
               _buildQuestionCard(),
-
-              // Answer Options
+              const SizedBox(
+                height: 30,
+              ),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(

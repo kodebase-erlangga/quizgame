@@ -108,7 +108,7 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
     } else if (widget.mode == 'battle') {
       questions = List.generate(30, (i) => i + 1);
     } else {
-      questions = List.generate(30, (i) => i + 1);
+      questions = List.generate(5, (i) => i + 1);
     }
     return questions;
   }
@@ -631,7 +631,13 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
       },
       child: Scaffold(
         body: Container(
-          decoration: const BoxDecoration(color: Color(0xffFEFFE8)),
+          decoration: const BoxDecoration(
+            color: Color(0xffFEFFE8),
+            image: DecorationImage(
+              image: AssetImage('assets/images/bg_line.png'),
+              fit: BoxFit.cover,
+            ),
+          ),
           child: SafeArea(
             child: Stack(
               children: [

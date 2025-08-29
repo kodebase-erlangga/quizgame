@@ -10,7 +10,13 @@ class PanduanColaboration extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(color: Color(0xffFEFFE8)),
+        decoration: const BoxDecoration(
+          color: Color(0xffFEFFE8),
+          image: DecorationImage(
+            image: AssetImage('assets/images/bg_line.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Stack(
           children: [
             Column(
@@ -19,7 +25,6 @@ class PanduanColaboration extends StatelessWidget {
                 Expanded(child: Center(child: buildTabLayout())),
               ],
             ),
-
             Positioned(
               bottom: 0,
               left: 0,
@@ -107,7 +112,6 @@ Widget buildTabLayout() {
             ),
           ),
           SizedBox(height: 24),
-
           Container(
             height: 50,
             margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -142,7 +146,6 @@ Widget buildTabLayout() {
               ],
             ),
           ),
-
           const SizedBox(height: 12),
           Container(
             width: 378,
@@ -166,11 +169,13 @@ Widget buildTabLayout() {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildRuleItem('Buat tim dan masukkan nama anggota (maksimal 30)'),
+                      _buildRuleItem(
+                          'Buat tim dan masukkan nama anggota (maksimal 30)'),
                       _buildRuleItem(
                         'Pilih mode soal: Sesuai Siswa atau Standar 30 soal',
                       ),
-                      _buildRuleItem('Sistem spin nama untuk menentukan siapa yang menjawab'),
+                      _buildRuleItem(
+                          'Sistem spin nama untuk menentukan siapa yang menjawab'),
                       _buildRuleItem(
                         'Setiap anggota mendapat giliran menjawab soal',
                       ),

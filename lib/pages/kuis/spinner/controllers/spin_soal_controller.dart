@@ -170,8 +170,6 @@ class SpinSoalController {
       if (onStateUpdate != null) {
         onStateUpdate();
       }
-
-      // Kembali ke SpinNama dengan informasi soal yang sudah dijawab
       Navigator.pop(context, answeredQuestion);
     } else {
       Navigator.pop(context, _selectedQuestion);

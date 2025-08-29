@@ -1,6 +1,9 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:quizgame/pages/kuis/hasil/hasil_kolaborasi.dart';
+import 'package:quizgame/pages/mode/battle/battle_new/jumlahSoal.dart';
+import 'package:quizgame/pages/mode/battle/battle_new/jumlah_tim.dart';
 import 'package:quizgame/pages/mode/battle/home_battle.dart';
 import 'package:quizgame/pages/mode/collaboration/teamName.dart';
 import 'package:quizgame/pages/mode/single/home_single.dart';
@@ -55,13 +58,12 @@ class ModePermainan extends StatelessWidget {
                 },
               ),
             ),
-
             SizedBox(
               width: double.infinity,
               child: Text(
                 description,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   color: Color(0xFFFFFFFF),
                   fontFamily: 'poppins',
@@ -72,7 +74,6 @@ class ModePermainan extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-
             Expanded(
               child: Image.asset(
                 'assets/images/$imageAsset',
@@ -108,12 +109,11 @@ class ModePermainan extends StatelessWidget {
               fontStyle: FontStyle.normal,
               foreground: Paint()
                 ..style = PaintingStyle.stroke
-                ..strokeWidth = 14
+                ..strokeWidth = 44
                 ..color = Colors.green,
             ),
             textAlign: TextAlign.center,
           ),
-
           Text(
             'Quizverse',
             style: TextStyle(
@@ -128,7 +128,6 @@ class ModePermainan extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
-
           const Text(
             'Quizverse',
             style: TextStyle(
@@ -149,7 +148,13 @@ class ModePermainan extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(color: Color(0xFFFEFFE8)),
+        decoration: const BoxDecoration(
+          color: Color(0xFFFEFFE8),
+          image: DecorationImage(
+            image: AssetImage('assets/images/bg_line.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: SafeArea(
           child: Column(
             children: [
@@ -193,7 +198,7 @@ class ModePermainan extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 // builder: (context) => const HomeColaboration(),
-                                builder: (context) => Teamname(),
+                                builder: (context) => HasilKolaborasi(),
                               ),
                             );
                           },
@@ -208,7 +213,7 @@ class ModePermainan extends StatelessWidget {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const HomeBattle(),
+                                builder: (context) => const JumlahTim(),
                               ),
                             );
                           },

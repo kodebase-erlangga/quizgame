@@ -161,9 +161,8 @@ class _SoalState extends State<Soal> {
       } else {
         // Based on students per team, not total students
         int studentsPerTeam = widget.studentsPerTeam ?? 0;
-        _totalSoal = studentsPerTeam > 0
-            ? studentsPerTeam
-            : 10; // minimum 10 questions
+        _totalSoal =
+            studentsPerTeam > 0 ? studentsPerTeam : 10; // minimum 10 questions
       }
     } else if (widget.daftarSiswa != null) {
       // Mode kolaborasi: cek pengaturan mode soal
@@ -174,8 +173,8 @@ class _SoalState extends State<Soal> {
         _totalSoal = widget.daftarSiswa!.length;
       }
     } else {
-      // Mode single: 30 soal
-      _totalSoal = 30;
+      // Mode single: 5 soal
+      _totalSoal = 5;
     }
   }
 
@@ -294,8 +293,8 @@ class _SoalState extends State<Soal> {
     if (widget.isBattleMode) {
       String currentTeam =
           widget.teamNames != null && widget.teamNames!.isNotEmpty
-          ? widget.teamNames![_currentTeamIndex % widget.teamNames!.length]
-          : 'Tim';
+              ? widget.teamNames![_currentTeamIndex % widget.teamNames!.length]
+              : 'Tim';
       title = 'Mode Battle - Giliran: $currentTeam';
     } else if (widget.daftarSiswa != null) {
       title = widget.modeSoal == 'tetap_30'

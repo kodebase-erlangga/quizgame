@@ -84,9 +84,8 @@ class TeamPlayerState extends State<TeamPlayer> {
       return;
     }
 
-    final totalQuestions = modeSoal == 'sesuai_siswa'
-        ? daftarAnggota.length
-        : 30;
+    final totalQuestions =
+        modeSoal == 'sesuai_siswa' ? daftarAnggota.length : 30;
     final removeNamesAfterSpin = modeSoal == 'sesuai_siswa';
     final groupName = namaGrupController.text.trim().isEmpty
         ? 'Tim Kolaborasi'
@@ -118,17 +117,22 @@ class TeamPlayerState extends State<TeamPlayer> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(color: Color(0xffFEFFE8)),
+        decoration: const BoxDecoration(
+          color: Color(0xffFEFFE8),
+          image: DecorationImage(
+            image: AssetImage('assets/images/bg_line.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Stack(
           children: [
             Column(
               children: [
                 SafeArea(child: _buildAppBar(context)),
                 Expanded(child: Center(child: _buildInputTeamForm())),
-                SizedBox(height: 80),
+                const SizedBox(height: 80),
               ],
             ),
-
             Positioned(
               bottom: 0,
               left: 0,
@@ -480,12 +484,12 @@ class TeamPlayerState extends State<TeamPlayer> {
                                 : GridView.builder(
                                     gridDelegate:
                                         SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 3, // 3 kolom
-                                          childAspectRatio:
-                                              2.0, // Rasio lebar:tinggi
-                                          crossAxisSpacing: 8,
-                                          mainAxisSpacing: 8,
-                                        ),
+                                      crossAxisCount: 3, // 3 kolom
+                                      childAspectRatio:
+                                          2.0, // Rasio lebar:tinggi
+                                      crossAxisSpacing: 8,
+                                      mainAxisSpacing: 8,
+                                    ),
                                     itemCount: 30, // Maksimal 30 slot
                                     itemBuilder: (context, index) {
                                       final bool hasData =
@@ -512,8 +516,8 @@ class TeamPlayerState extends State<TeamPlayer> {
                                                     child: Padding(
                                                       padding:
                                                           EdgeInsets.symmetric(
-                                                            horizontal: 2,
-                                                          ),
+                                                        horizontal: 2,
+                                                      ),
                                                       child: Text(
                                                         daftarAnggota[index],
                                                         style: TextStyle(
@@ -542,10 +546,10 @@ class TeamPlayerState extends State<TeamPlayer> {
                                                         height: 20,
                                                         decoration:
                                                             BoxDecoration(
-                                                              color: Colors.red,
-                                                              shape: BoxShape
-                                                                  .circle,
-                                                            ),
+                                                          color: Colors.red,
+                                                          shape:
+                                                              BoxShape.circle,
+                                                        ),
                                                         child: Icon(
                                                           Icons.close,
                                                           color: Colors.white,

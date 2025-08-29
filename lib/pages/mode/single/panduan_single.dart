@@ -10,7 +10,13 @@ class PanduanSingle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(color: Color(0xffFEFFE8)),
+        decoration: const BoxDecoration(
+          color: Color(0xffFEFFE8),
+          image: DecorationImage(
+            image: AssetImage('assets/images/bg_line.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Stack(
           children: [
             Column(
@@ -19,7 +25,6 @@ class PanduanSingle extends StatelessWidget {
                 Expanded(child: Center(child: buildTabLayout())),
               ],
             ),
-
             Positioned(
               bottom: 0,
               left: 0,
@@ -107,7 +112,6 @@ Widget buildTabLayout() {
             ),
           ),
           SizedBox(height: 24),
-
           Container(
             height: 50,
             margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -142,7 +146,6 @@ Widget buildTabLayout() {
               ],
             ),
           ),
-
           const SizedBox(height: 12),
           Container(
             width: 378,
@@ -172,7 +175,7 @@ Widget buildTabLayout() {
                       ),
                       _buildRuleItem('Setiap soal hanya bisa dijawab 1x'),
                       _buildRuleItem(
-                        'Terdapat 30 pertanyaan dari berbagai topik',
+                        'Terdapat 5 pertanyaan dari berbagai topik',
                       ),
                       _buildRuleItem(
                         'Jawaban benar akan mendapatkan 10 poin, kalau salah 0 poin',

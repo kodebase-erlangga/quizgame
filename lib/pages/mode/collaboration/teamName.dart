@@ -18,7 +18,13 @@ class TeamnameState extends State<Teamname> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(color: Color(0xffFEFFE8)),
+        decoration: const BoxDecoration(
+          color: Color(0xffFEFFE8),
+          image: DecorationImage(
+            image: AssetImage('assets/images/bg_line.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Stack(
           children: [
             Column(
@@ -28,7 +34,6 @@ class TeamnameState extends State<Teamname> {
                 SizedBox(height: 80),
               ],
             ),
-
             Positioned(
               bottom: 0,
               left: 0,
@@ -151,7 +156,7 @@ class TeamnameState extends State<Teamname> {
                         child: TextFormField(
                           controller: namaGrupController,
                           decoration: InputDecoration(
-                            hintText: 'Ex : Tim Hore',
+                            hintText: 'Contoh : Tim Hore',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(40),
                               borderSide: BorderSide(color: Color(0xFF444444)),

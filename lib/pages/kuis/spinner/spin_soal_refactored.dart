@@ -113,7 +113,13 @@ class _SpinSoalState extends State<SpinSoal> {
       },
       child: Scaffold(
         body: Container(
-          decoration: const BoxDecoration(color: Color(0xffFEFFE8)),
+          decoration: const BoxDecoration(
+            color: Color(0xffFEFFE8),
+            image: DecorationImage(
+              image: AssetImage('assets/images/bg_line.png'),
+              fit: BoxFit.cover,
+            ),
+          ),
           child: SafeArea(
             child: Stack(
               children: [
@@ -262,7 +268,25 @@ class _SpinSoalState extends State<SpinSoal> {
   }
 
   Widget _buildMainContent() {
-    if (_controller.availableQuestions.isNotEmpty) {
+    // Handle last question scenario - show popup and auto-navigate
+    if (_controller.availableQuestions.length == 1 &&
+        !_controller.isSpinning &&
+        _controller.selectedQuestion == null) {
+      // Auto-select the last question and show popup
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _controller
+              .initializeForSingleQuestion(() => setState(() {}))
+              .then((_) {
+            _showLastQuestionPopupAndContinue();
+          });
+        }
+      });
+      return SpinInfoWidgets.buildLoadingIndicator();
+    }
+
+    if (_controller.availableQuestions.isNotEmpty &&
+        _controller.availableQuestions.length > 1) {
       return SpinWheelWidget(
         availableQuestions: _controller.availableQuestions,
         isSpinning: _controller.isSpinning,
@@ -291,6 +315,25 @@ class _SpinSoalState extends State<SpinSoal> {
   void _handleSpinAnimationEnd() async {
     _controller.onAnimationEnd(() => setState(() {}), context);
 
+    if (_controller.selectedQuestion != null && mounted) {
+      await QuestionPopup.show(
+        context,
+        questionNumber: _controller.selectedQuestion!,
+        autoClose: true,
+        autoCloseDuration: const Duration(seconds: 3),
+      );
+
+      // Navigate to question after popup closes
+      if (mounted) {
+        _controller.answerQuestion(
+          context,
+          onStateUpdate: () => setState(() {}),
+        );
+      }
+    }
+  }
+
+  void _showLastQuestionPopupAndContinue() async {
     if (_controller.selectedQuestion != null && mounted) {
       await QuestionPopup.show(
         context,

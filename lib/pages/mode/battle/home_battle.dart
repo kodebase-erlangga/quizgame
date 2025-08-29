@@ -263,10 +263,7 @@ class _HomeBattleState extends State<HomeBattle> {
         child: SafeArea(
           child: Column(
             children: [
-              // Custom App Bar
               _buildAppBar(context),
-
-              // Content
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(24.0),
@@ -1105,8 +1102,7 @@ class _HomeBattleState extends State<HomeBattle> {
   }
 
   Widget _buildStartBattleButton() {
-    bool canStart =
-        selectedTeams >= 2 &&
+    bool canStart = selectedTeams >= 2 &&
         teamControllers.every(
           (controller) => controller.text.trim().isNotEmpty,
         );
@@ -1214,9 +1210,8 @@ class _HomeBattleState extends State<HomeBattle> {
       return;
     }
 
-    List<String> teamNames = teamControllers
-        .map((controller) => controller.text.trim())
-        .toList();
+    List<String> teamNames =
+        teamControllers.map((controller) => controller.text.trim()).toList();
 
     // Validate team names
     if (teamNames.any((name) => name.isEmpty)) {
@@ -1308,9 +1303,8 @@ class _HomeBattleState extends State<HomeBattle> {
         }
       }
 
-      final questionsPerTeam = questionMode == 'based_on_students'
-          ? _getStudentsPerTeam()
-          : 30;
+      final questionsPerTeam =
+          questionMode == 'based_on_students' ? _getStudentsPerTeam() : 30;
 
       final removeNamesAfterSpin = questionMode == 'based_on_students';
 
