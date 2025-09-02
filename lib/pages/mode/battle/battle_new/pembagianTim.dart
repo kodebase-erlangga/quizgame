@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:quizgame/pages/mode.dart';
-import 'package:quizgame/pages/mode/collaboration/anggotaTim.dart';
 import 'package:quizgame/pages/mode/single/panduan_single.dart';
 import 'package:quizgame/pages/mode/battle/battle_new/jumlahSoal.dart';
 
@@ -371,10 +370,16 @@ class PembagianTimState extends State<PembagianTim> {
           ),
           child: TextButton(
             onPressed: () {
+              // Pass team data to JumlahSoal page
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const JumlahSoal(),
+                  builder: (context) => JumlahSoal(
+                    teamCount: widget.teamCount,
+                    studentCount: widget.studentCount,
+                    teamMembers: teamMembers,
+                    teamNames: teamNames,
+                  ),
                 ),
               );
             },

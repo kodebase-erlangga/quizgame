@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:quizgame/pages/mode.dart';
 
-class HasilBattle extends StatefulWidget {
+class HasilModeBattle extends StatefulWidget {
   final Map<String, int> teamScores;
   final Map<String, List<String>> teamMembers;
   final List<Map<String, dynamic>> battleResults;
   final Duration totalTime;
   final String winnerTeam;
 
-  const HasilBattle({
+  const HasilModeBattle({
     super.key,
     required this.teamScores,
     required this.teamMembers,
@@ -18,57 +18,33 @@ class HasilBattle extends StatefulWidget {
   });
 
   @override
-  State<HasilBattle> createState() => _HasilBattleState();
+  State<HasilModeBattle> createState() => _HasilModeBattleState();
 }
 
-class _HasilBattleState extends State<HasilBattle> {
-  String get formattedTime {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    final minutes = twoDigits(widget.totalTime.inMinutes.remainder(60));
-    final seconds = twoDigits(widget.totalTime.inSeconds.remainder(60));
-    return '$minutes:$seconds';
-  }
+class _HasilModeBattleState extends State<HasilModeBattle> {
+  late List<MapEntry<String, List<String>>> groupedTeams;
 
-  List<MapEntry<String, int>> get sortedTeams {
-    var entries = widget.teamScores.entries.toList();
-    entries.sort((a, b) => b.value.compareTo(a.value));
-    return entries;
-  }
+  @override
+  void initState() {
+    super.initState();
+    // Group teams by score
+    Map<int, List<String>> scoreGroups = {};
 
-  Color getTeamColor(int index) {
-    const colors = [
-      Color(0xFFFFD700), // Gold for winner
-      Color(0xFFC0C0C0), // Silver for second
-      Color(0xFFCD7F32), // Bronze for third
-      Color(0xFF4A9B8E), // Default for others
-    ];
-    return colors[index < colors.length ? index : colors.length - 1];
-  }
+    widget.teamScores.forEach((teamName, score) {
+      if (scoreGroups.containsKey(score)) {
+        scoreGroups[score]!.add(teamName);
+      } else {
+        scoreGroups[score] = [teamName];
+      }
+    });
 
-  IconData getPositionIcon(int index) {
-    switch (index) {
-      case 0:
-        return Icons.emoji_events;
-      case 1:
-        return Icons.workspace_premium;
-      case 2:
-        return Icons.military_tech;
-      default:
-        return Icons.group;
-    }
-  }
+    // Sort scores in descending order and create grouped teams list
+    List<int> sortedScores = scoreGroups.keys.toList()
+      ..sort((a, b) => b.compareTo(a));
 
-  String getPositionText(int index) {
-    switch (index) {
-      case 0:
-        return '1st Place - Champion!';
-      case 1:
-        return '2nd Place - Great Job!';
-      case 2:
-        return '3rd Place - Well Done!';
-      default:
-        return '${index + 1}th Place';
-    }
+    groupedTeams = sortedScores
+        .map((score) => MapEntry(score.toString(), scoreGroups[score]!))
+        .toList();
   }
 
   @override
@@ -76,28 +52,28 @@ class _HasilBattleState extends State<HasilBattle> {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFFFF6B35), Color(0xFFD63031)],
+          color: Color(0xffFEFFE8),
+          image: DecorationImage(
+            image: AssetImage('assets/images/bg_line.png'),
+            fit: BoxFit.cover,
           ),
         ),
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                _buildHeader(),
-                const SizedBox(height: 30),
-                _buildWinnerCard(),
-                const SizedBox(height: 20),
-                Expanded(child: _buildLeaderboard()),
-                const SizedBox(height: 20),
-                _buildBattleStats(),
-                const SizedBox(height: 20),
-                _buildActionButtons(),
-              ],
+          child: SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 50),
+              child: Column(
+                children: [
+                  _buildAppBar(context),
+                  const SizedBox(height: 20),
+                  // _buildBattleSummary(),
+                  // const SizedBox(height: 20),
+                  peringkat(),
+                  const SizedBox(height: 30),
+                  daftarPeringkat(),
+                  const SizedBox(height: 50),
+                ],
+              ),
             ),
           ),
         ),
@@ -105,389 +81,344 @@ class _HasilBattleState extends State<HasilBattle> {
     );
   }
 
-  Widget _buildHeader() {
+  Widget peringkat() {
+    return Container(
+      width: 1040,
+      height: 403,
+      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 32),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFAA0D),
+        borderRadius: BorderRadius.circular(17),
+        border: Border.all(color: Colors.black, width: 2),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          // Position 2
+          if (groupedTeams.length >= 2)
+            _buildRankingItem(
+              rank: 2,
+              imagePath: 'assets/icons/juara2.png',
+              teamNames: groupedTeams[1].value,
+              score: groupedTeams[1].key,
+              height: 200,
+            ),
+          // Position 1 (Winner)
+          if (groupedTeams.isNotEmpty)
+            _buildRankingItem(
+              rank: 1,
+              imagePath: 'assets/icons/juara1.png',
+              teamNames: groupedTeams[0].value,
+              score: groupedTeams[0].key,
+              height: 250,
+            ),
+          // Position 3
+          if (groupedTeams.length >= 3)
+            _buildRankingItem(
+              rank: 3,
+              imagePath: 'assets/icons/juara3.png',
+              teamNames: groupedTeams[2].value,
+              score: groupedTeams[2].key,
+              height: 150,
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRankingItem({
+    required int rank,
+    required String imagePath,
+    required List<String> teamNames,
+    required String score,
+    required double height,
+  }) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Icon(
-          Icons.emoji_events,
-          size: 80,
-          color: Color(0xFFFFD700),
+        // Crown/Trophy Image
+        Container(
+          width: 80,
+          height: 80,
+          child: Image.asset(
+            imagePath,
+            fit: BoxFit.contain,
+          ),
         ),
         const SizedBox(height: 10),
-        Text(
-          'Battle Complete!',
-          style: const TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
+        // Podium
+        Container(
+          width: 180,
+          height: height,
+          decoration: BoxDecoration(
             color: Colors.white,
-            fontFamily: 'Straw Milky',
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.black, width: 2),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black26,
+                offset: const Offset(2, 2),
+                blurRadius: 4,
+              ),
+            ],
           ),
-        ),
-        const SizedBox(height: 5),
-        Text(
-          'The ultimate quiz showdown has ended!',
-          style: const TextStyle(
-            fontSize: 16,
-            color: Colors.white70,
-            fontFamily: 'Poppins',
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Rank Number
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: rank == 1
+                      ? Colors.yellow
+                      : rank == 2
+                          ? Colors.grey[400]
+                          : Colors.brown[300],
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.black, width: 2),
+                ),
+                child: Center(
+                  child: Text(
+                    '$rank',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              // Team Names (multiple teams if tied)
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: teamNames
+                        .map(
+                          (teamName) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 2),
+                            child: Text(
+                              teamName,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 5),
+              // Score
+              Text(
+                score,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.black87,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
-          textAlign: TextAlign.center,
         ),
       ],
     );
   }
 
-  Widget _buildWinnerCard() {
-    final winnerScore = widget.teamScores[widget.winnerTeam] ?? 0;
-    final winnerMembers = widget.teamMembers[widget.winnerTeam] ?? [];
-
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(25),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Color(0xFFFFD700), width: 3),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 15,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Icon(
-            Icons.emoji_events,
-            size: 60,
-            color: Color(0xFFFFD700),
-          ),
-          const SizedBox(height: 15),
-          Text(
-            '🏆 CHAMPION 🏆',
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFFFFD700),
-              fontFamily: 'Straw Milky',
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            widget.winnerTeam,
-            style: const TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFFD63031),
-              fontFamily: 'Straw Milky',
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            'Score: $winnerScore points',
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF2D5A52),
-              fontFamily: 'Poppins',
-            ),
-          ),
-          const SizedBox(height: 15),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: winnerMembers.map((member) {
-              return Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: Color(0xFFFFD700).withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Color(0xFFFFD700), width: 1),
-                ),
-                child: Text(
-                  member,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Color(0xFFD63031),
-                    fontWeight: FontWeight.w600,
-                    fontFamily: 'Poppins',
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLeaderboard() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.95),
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Column(
+  Widget _buildAppBar(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(20),
-            decoration: const BoxDecoration(
-              color: Color(0xFFD63031),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15),
-                topRight: Radius.circular(15),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: IconButton(
+              icon: Image.asset(
+                'assets/images/icon_back.png',
+                height: 54.0,
+                width: 54.0,
               ),
-            ),
-            child: Row(
-              children: [
-                Icon(Icons.leaderboard, color: Colors.white, size: 24),
-                const SizedBox(width: 10),
-                const Text(
-                  'Final Leaderboard',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontFamily: 'Poppins',
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ModePermainan(),
                   ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(15),
-              itemCount: sortedTeams.length,
-              itemBuilder: (context, index) {
-                final team = sortedTeams[index];
-                final members = widget.teamMembers[team.key] ?? [];
-                return _buildTeamRankCard(team.key, team.value, members, index);
+                  (route) => false,
+                );
               },
             ),
           ),
+          const Expanded(
+            child: Center(
+              child: Text(
+                'Hasil',
+                style: TextStyle(
+                  color: Color(0xFF444444),
+                  fontFamily: 'Straw Milky',
+                  fontSize: 32,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+          ),
+          Image.asset(
+            'assets/images/Quizverse.png',
+            width: 153,
+            height: 47,
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildTeamRankCard(
-      String teamName, int score, List<String> members, int position) {
+  Widget daftarPeringkat() {
+    // Only show if there are more than 3 ranking groups
+    if (groupedTeams.length <= 3) {
+      return const SizedBox.shrink();
+    }
+
+    List<Widget> rankItems = [];
+    int currentRank = 4;
+
+    for (int i = 3; i < groupedTeams.length; i++) {
+      for (String teamName in groupedTeams[i].value) {
+        rankItems.add(_buildTeamRankItem(
+          rank: currentRank,
+          teamName: teamName,
+          points: int.parse(groupedTeams[i].key),
+          isEvenRow: (rankItems.length) % 2 == 0,
+          isLast: i == groupedTeams.length - 1 &&
+              teamName == groupedTeams[i].value.last,
+        ));
+      }
+      // Update rank for next group
+      currentRank += groupedTeams[i].value.length;
+    }
+
     return Container(
-      margin: const EdgeInsets.only(bottom: 15),
-      padding: const EdgeInsets.all(15),
+      width: 1040,
       decoration: BoxDecoration(
-        color: getTeamColor(position).withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: getTeamColor(position), width: 2),
+        color: const Color(0xFF5BBAA7),
+        borderRadius: BorderRadius.circular(17),
+        border: Border.all(color: const Color(0xFF4A9B89), width: 2),
       ),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 25,
-            backgroundColor: getTeamColor(position),
-            child: Icon(
-              getPositionIcon(position),
-              color: Colors.white,
-              size: 24,
-            ),
-          ),
-          const SizedBox(width: 15),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  teamName,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF2D5A52),
-                    fontFamily: 'Straw Milky',
-                  ),
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  getPositionText(position),
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: getTeamColor(position),
-                    fontWeight: FontWeight.w600,
-                    fontFamily: 'Poppins',
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Wrap(
-                  spacing: 6,
-                  runSpacing: 4,
-                  children: members.map((member) {
-                    return Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade100,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        member,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey,
-                          fontFamily: 'Poppins',
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ],
-            ),
-          ),
-          Column(
-            children: [
-              Text(
-                '$score',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: getTeamColor(position),
-                  fontFamily: 'Poppins',
-                ),
+      child: Column(children: rankItems),
+    );
+  }
+
+  Widget _buildTeamRankItem({
+    required int rank,
+    required String teamName,
+    required int points,
+    required bool isEvenRow,
+    required bool isLast,
+  }) {
+    return Container(
+      width: double.infinity,
+      height: 50,
+      decoration: BoxDecoration(
+        color: isEvenRow
+            ? const Color(0xFF5BBAA7) // Lighter teal for even rows
+            : const Color(0xFF4A9B89), // Darker teal for odd rows
+        borderRadius: isLast
+            ? const BorderRadius.only(
+                bottomLeft: Radius.circular(15),
+                bottomRight: Radius.circular(15),
+              )
+            : null,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              '$rank. $teamName',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                fontFamily: 'Satoshi',
               ),
-              const Text(
-                'points',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey,
-                  fontFamily: 'Poppins',
-                ),
+            ),
+            Text(
+              '$points Point',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                fontFamily: 'Satoshi',
               ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildBattleStats() {
-    final totalQuestions = widget.battleResults.length;
-    final totalTeams = widget.teamScores.length;
+  Widget _buildBattleSummary() {
+    String formattedTime =
+        "${widget.totalTime.inMinutes}:${(widget.totalTime.inSeconds % 60).toString().padLeft(2, '0')}";
 
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.9),
-        borderRadius: BorderRadius.circular(15),
+        color: const Color(0xFF5BBAA7),
+        borderRadius: BorderRadius.circular(17),
+        border: Border.all(color: Colors.black, width: 2),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Battle Statistics',
+            'Hasil Battle Mode',
             style: TextStyle(
-              fontSize: 18,
+              color: Colors.white,
+              fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Color(0xFFD63031),
-              fontFamily: 'Poppins',
+              fontFamily: 'Satoshi',
             ),
           ),
-          const SizedBox(height: 15),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildStatItem('Mode', 'Battle Royale'),
-              _buildStatItem('Teams', '$totalTeams'),
-              _buildStatItem('Questions', '$totalQuestions'),
-              _buildStatItem('Duration', formattedTime),
-            ],
+          const SizedBox(height: 10),
+          Text(
+            'Pemenang: ${widget.winnerTeam}',
+            style: const TextStyle(
+              color: Colors.yellow,
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              fontFamily: 'Satoshi',
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Total Waktu: $formattedTime',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontFamily: 'Satoshi',
+            ),
+          ),
+          Text(
+            'Jumlah Tim: ${widget.teamScores.length}',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontFamily: 'Satoshi',
+            ),
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildStatItem(String label, String value) {
-    return Column(
-      children: [
-        Text(
-          value,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFFD63031),
-            fontFamily: 'Poppins',
-          ),
-        ),
-        const SizedBox(height: 5),
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 12,
-            color: Colors.grey,
-            fontFamily: 'Poppins',
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildActionButtons() {
-    return Row(
-      children: [
-        Expanded(
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const ModePermainan()),
-                (route) => false,
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              foregroundColor: const Color(0xFFD63031),
-              padding: const EdgeInsets.symmetric(vertical: 15),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-                side: const BorderSide(color: Color(0xFFD63031), width: 2),
-              ),
-            ),
-            child: const Text(
-              'Battle Again',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Poppins',
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(width: 15),
-        Expanded(
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).popUntil((route) => route.isFirst);
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFFEFFE8),
-              foregroundColor: const Color(0xFFD63031),
-              padding: const EdgeInsets.symmetric(vertical: 15),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            child: const Text(
-              'Main Menu',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Poppins',
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

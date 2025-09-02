@@ -4,7 +4,7 @@ import 'package:quizgame/pages/mode.dart';
 import 'package:quizgame/utils/quiz_calculator.dart';
 import 'pages/kuis/hasil/hasil_single.dart';
 import 'pages/kuis/hasil/hasil_colaboration.dart';
-import 'pages/kuis/hasil/hasil_battle.dart';
+import 'pages/kuis/hasil/hasil_battleXX.dart';
 
 void main() {
   runApp(const MyApp());
@@ -52,15 +52,15 @@ class MyApp extends StatelessWidget {
 
     // Check if it's battle mode
     final bool isBattleMode = processedArgs['isBattleMode'] ?? false;
-    if (isBattleMode) {
-      return HasilBattle(
-        teamScores: processedArgs['teamScores'] ?? {},
-        teamMembers: processedArgs['teamMembers'] ?? {},
-        battleResults: processedArgs['battleResults'] ?? [],
-        totalTime: processedArgs['totalTime'] ?? const Duration(seconds: 0),
-        winnerTeam: processedArgs['winnerTeam'] ?? '',
-      );
-    }
+    // if (isBattleMode) {
+    //   return HasilBattle(
+    //     teamScores: processedArgs['teamScores'] ?? {},
+    //     teamMembers: processedArgs['teamMembers'] ?? {},
+    //     battleResults: processedArgs['battleResults'] ?? [],
+    //     totalTime: processedArgs['totalTime'] ?? const Duration(seconds: 0),
+    //     winnerTeam: processedArgs['winnerTeam'] ?? '',
+    //   );
+    // }
 
     // Check if it's collaboration mode
     final bool isModeKolaborasi = processedArgs['isModeKolaborasi'] == true ||

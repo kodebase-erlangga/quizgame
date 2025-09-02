@@ -1,10 +1,11 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:quizgame/pages/kuis/hasil/hasil_battle.dart';
 import 'package:quizgame/pages/kuis/hasil/hasil_kolaborasi.dart';
 import 'package:quizgame/pages/mode/battle/battle_new/jumlahSoal.dart';
 import 'package:quizgame/pages/mode/battle/battle_new/jumlah_tim.dart';
-import 'package:quizgame/pages/mode/battle/home_battle.dart';
+// import 'package:quizgame/pages/mode/battle/home_battle.dart';
 import 'package:quizgame/pages/mode/collaboration/teamName.dart';
 import 'package:quizgame/pages/mode/single/home_single.dart';
 

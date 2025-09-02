@@ -58,22 +58,54 @@ class _SpinSoalState extends State<SpinSoal> {
 
     _controller = SpinSoalController(model);
 
-    // Auto-select when there's only one question available
+    print(
+        'DEBUG SPINSOAL: initState - Available questions: ${_controller.availableQuestions.length}');
+
+    // For battle mode, disable auto-select to prevent interference with team transitions
+    if (widget.mode == 'battle') {
+      print(
+          'DEBUG SPINSOAL: Battle mode - skipping auto-initialization to prevent transition conflicts');
+      return;
+    }
+
+    // Only auto-select for non-battle modes (collaboration, single)
     if (_controller.availableQuestions.length == 1) {
+      print(
+          'DEBUG SPINSOAL: Only 1 question available, scheduling auto-initialization');
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          _controller.initializeForSingleQuestion(() => setState(() {})).then((
-            _,
-          ) {
-            _showSingleQuestionPopupAndContinue();
-          });
-        }
+        // Add longer delay to ensure we're fully loaded and not in transition
+        Future.delayed(const Duration(milliseconds: 1500), () {
+          if (mounted && widget.mode != 'battle') {
+            print('DEBUG SPINSOAL: Calling initializeForSingleQuestion');
+            _controller
+                .initializeForSingleQuestion(() => setState(() {}))
+                .then((
+              _,
+            ) {
+              print(
+                  'DEBUG SPINSOAL: initializeForSingleQuestion completed, waiting before showing popup');
+              // Add additional delay to ensure navigation transition is complete
+              Future.delayed(const Duration(milliseconds: 1000), () {
+                if (mounted && widget.mode != 'battle') {
+                  print(
+                      'DEBUG SPINSOAL: Now showing popup after navigation delay');
+                  _showSingleQuestionPopupAndContinue();
+                }
+              });
+            });
+          }
+        });
       });
     }
   }
 
   void _showSingleQuestionPopupAndContinue() async {
+    print('DEBUG SPINSOAL: _showSingleQuestionPopupAndContinue called');
+    print('DEBUG SPINSOAL: selectedQuestion = ${_controller.selectedQuestion}');
+    print('DEBUG SPINSOAL: currentSoal = ${_controller.currentSoal}');
+
     if (_controller.selectedQuestion != null && mounted) {
+      print('DEBUG SPINSOAL: Showing question popup');
       await QuestionPopup.show(
         context,
         questionNumber: _controller.selectedQuestion!,
@@ -81,6 +113,7 @@ class _SpinSoalState extends State<SpinSoal> {
         autoCloseDuration: const Duration(seconds: 3),
       );
 
+      print('DEBUG SPINSOAL: Popup closed, navigating to answer question');
       // Navigate to question after popup closes
       if (mounted) {
         _controller.answerQuestion(
@@ -88,6 +121,9 @@ class _SpinSoalState extends State<SpinSoal> {
           onStateUpdate: () => setState(() {}),
         );
       }
+    } else {
+      print(
+          'DEBUG SPINSOAL: Cannot show popup - selectedQuestion: ${_controller.selectedQuestion}, mounted: $mounted');
     }
   }
 
@@ -268,6 +304,74 @@ class _SpinSoalState extends State<SpinSoal> {
   }
 
   Widget _buildMainContent() {
+    // For battle mode, avoid auto-popup to prevent interference with team transitions
+    if (widget.mode == 'battle') {
+      // In battle mode, always show the wheel or current state without auto-popup
+      if (_controller.availableQuestions.isNotEmpty &&
+          _controller.availableQuestions.length > 1) {
+        return SpinWheelWidget(
+          availableQuestions: _controller.availableQuestions,
+          isSpinning: _controller.isSpinning,
+          fortuneStream: _controller.fortuneStream,
+          onTap: () => _controller.spinWheel(() => setState(() {}), context),
+          onAnimationEnd: () => _handleSpinAnimationEnd(),
+        );
+      }
+
+      if (_controller.isSpinning) {
+        return SpinInfoWidgets.buildLoadingIndicator();
+      }
+
+      if (_controller.selectedQuestion != null &&
+          _controller.currentSoal != null &&
+          !_controller.isSpinning) {
+        return SpinInfoWidgets.buildSelectedQuestionDisplay(
+          selectedQuestion: _controller.selectedQuestion!,
+          currentSoal: _controller.currentSoal!,
+        );
+      }
+
+      // For single question in battle mode, show manual button instead of auto-popup
+      if (_controller.availableQuestions.length == 1) {
+        return Container(
+          padding: const EdgeInsets.all(20),
+          child: ElevatedButton(
+            onPressed: () {
+              if (_controller.selectedQuestion == null) {
+                _controller
+                    .initializeForSingleQuestion(() => setState(() {}))
+                    .then((_) {
+                  _showLastQuestionPopupAndContinue();
+                });
+              } else {
+                _showLastQuestionPopupAndContinue();
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF459D93),
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+                side: const BorderSide(color: Colors.black, width: 2),
+              ),
+            ),
+            child: Text(
+              'Mulai Soal ${_controller.availableQuestions.first}',
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                fontFamily: 'Satoshi',
+              ),
+            ),
+          ),
+        );
+      }
+
+      return const SizedBox.shrink();
+    }
+
+    // Original logic for non-battle modes (collaboration, single)
     // Handle last question scenario - show popup and auto-navigate
     if (_controller.availableQuestions.length == 1 &&
         !_controller.isSpinning &&

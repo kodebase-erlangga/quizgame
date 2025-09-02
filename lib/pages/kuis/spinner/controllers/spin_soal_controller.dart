@@ -39,20 +39,31 @@ class SpinSoalController {
   }
 
   Future<void> initializeForSingleQuestion(VoidCallback setState) async {
+    print('DEBUG CONTROLLER: initializeForSingleQuestion called');
+    print('DEBUG CONTROLLER: Available questions: $_availableQuestions');
+
     if (_availableQuestions.length == 1) {
       final questionNumber = _availableQuestions[0];
+      print('DEBUG CONTROLLER: Setting selected question to: $questionNumber');
       _selectedQuestion = questionNumber;
       setState();
 
+      print('DEBUG CONTROLLER: Loading soal...');
       await _loadSoal(questionNumber);
+      print('DEBUG CONTROLLER: Soal loaded: $_currentSoal');
       setState();
     }
   }
 
   Future<void> _loadSoal(int nomorSoal) async {
+    print('DEBUG CONTROLLER: _loadSoal called with nomorSoal: $nomorSoal');
     final soal = await QuestionService.loadSoal(nomorSoal);
     if (soal != null) {
       _currentSoal = soal;
+      print(
+          'DEBUG CONTROLLER: Soal loaded successfully: ${soal['pertanyaan']}');
+    } else {
+      print('DEBUG CONTROLLER: ERROR - Failed to load soal $nomorSoal');
     }
   }
 
@@ -88,7 +99,12 @@ class SpinSoalController {
   }
 
   void answerQuestion(BuildContext context, {VoidCallback? onStateUpdate}) {
+    print('DEBUG CONTROLLER: answerQuestion called');
+    print('DEBUG CONTROLLER: _selectedQuestion = $_selectedQuestion');
+    print('DEBUG CONTROLLER: _currentSoal = $_currentSoal');
+
     if (_selectedQuestion != null && _currentSoal != null) {
+      print('DEBUG CONTROLLER: Navigating to JawabSoal');
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -106,7 +122,18 @@ class SpinSoalController {
 
               if (model.mode == 'single' &&
                   model.onQuestionAnsweredWithNumber != null) {
-                print('DEBUG CONTROLLER: Calling onQuestionAnsweredWithNumber');
+                print(
+                    'DEBUG CONTROLLER: Calling onQuestionAnsweredWithNumber for single mode');
+                model.onQuestionAnsweredWithNumber!(_selectedQuestion!, benar);
+              } else if (model.mode == 'battle' &&
+                  model.onQuestionAnsweredWithNumber != null) {
+                print(
+                    'DEBUG CONTROLLER: Calling onQuestionAnsweredWithNumber for battle mode');
+                model.onQuestionAnsweredWithNumber!(_selectedQuestion!, benar);
+              } else if (model.mode == 'collaboration' &&
+                  model.onQuestionAnsweredWithNumber != null) {
+                print(
+                    'DEBUG CONTROLLER: Calling onQuestionAnsweredWithNumber for collaboration mode');
                 model.onQuestionAnsweredWithNumber!(_selectedQuestion!, benar);
               } else if (model.onQuestionAnswered != null) {
                 print('DEBUG CONTROLLER: Calling onQuestionAnswered');
@@ -121,6 +148,23 @@ class SpinSoalController {
         // ignore: use_build_context_synchronously
         _handleAfterAnswering(context, onStateUpdate: onStateUpdate);
       });
+    } else {
+      print(
+          'DEBUG CONTROLLER: Cannot navigate - selectedQuestion: $_selectedQuestion, currentSoal: $_currentSoal');
+      if (_selectedQuestion != null && _currentSoal == null) {
+        print('DEBUG CONTROLLER: Soal belum dimuat, mencoba memuat ulang...');
+        _loadSoal(_selectedQuestion!).then((_) {
+          if (onStateUpdate != null) {
+            onStateUpdate();
+          }
+          // Retry after loading
+          if (_currentSoal != null) {
+            answerQuestion(context, onStateUpdate: onStateUpdate);
+          } else {
+            print('DEBUG CONTROLLER: ERROR - Failed to load soal');
+          }
+        });
+      }
     }
   }
 
@@ -160,8 +204,8 @@ class SpinSoalController {
       // Kembali ke SpinNama dengan informasi soal yang sudah dijawab
       Navigator.pop(context, answeredQuestion);
     } else if (model.mode == 'battle') {
-      // Mode battle: hapus soal, nama tetap (seperti single tapi multiplayer)
-      _availableQuestions.remove(_selectedQuestion);
+      // Mode battle: Don't remove questions here, let SpinNama manage the questions
+      // Just return the answered question number back to SpinNama
       final answeredQuestion = _selectedQuestion;
       _selectedQuestion = null;
       _currentSoal = null;
@@ -170,6 +214,9 @@ class SpinSoalController {
       if (onStateUpdate != null) {
         onStateUpdate();
       }
+
+      print(
+          'DEBUG CONTROLLER: Battle mode - returning answered question: $answeredQuestion');
       Navigator.pop(context, answeredQuestion);
     } else {
       Navigator.pop(context, _selectedQuestion);

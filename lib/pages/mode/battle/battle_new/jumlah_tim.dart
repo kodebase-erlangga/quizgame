@@ -21,8 +21,6 @@ class JumlahTimState extends State<JumlahTim> {
   int? selectedTeamCount;
   int? studentCount;
   List<int> availableTeams = [2, 3, 5, 10];
-  bool isStudentFilledFirst = false;
-  bool isTeamFilledFirst = false;
   static const int maxParticipants = 100;
   Timer? _inputTimer;
   bool _hasShownMaxParticipantsPopup = false;
@@ -188,6 +186,61 @@ class JumlahTimState extends State<JumlahTim> {
     );
   }
 
+  void _showParticipantFirstPopup() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: Row(
+            children: [
+              Icon(
+                Icons.info,
+                color: Colors.orange,
+                size: 24,
+              ),
+              const SizedBox(width: 8),
+              const Text(
+                'Peringatan',
+                style: TextStyle(
+                  fontFamily: 'Satoshi',
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
+                  color: Colors.orange,
+                ),
+              ),
+            ],
+          ),
+          content: const Text(
+            'Silakan isi jumlah peserta terlebih dahulu sebelum memilih jumlah tim.',
+            style: TextStyle(
+              fontFamily: 'Satoshi',
+              fontWeight: FontWeight.w400,
+              fontSize: 14,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'OK',
+                style: TextStyle(
+                  color: Color(0xff459D93),
+                  fontFamily: 'Satoshi',
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _showTeamReducedDialog(int oldTeam, int newTeam) {
     showDialog(
       context: context,
@@ -331,11 +384,13 @@ class JumlahTimState extends State<JumlahTim> {
             border: InputBorder.none,
             contentPadding: EdgeInsets.zero,
           ),
-          hint: const Text(
-            'Pilih Jumlah Tim',
+          hint: Text(
+            studentCount == null
+                ? 'Isi jumlah peserta dulu'
+                : 'Pilih Jumlah Tim',
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: Colors.black,
+                color: studentCount == null ? Colors.red.shade300 : Colors.grey,
                 fontSize: 16,
                 fontFamily: 'Satoshi',
                 fontStyle: FontStyle.normal,
@@ -346,40 +401,49 @@ class JumlahTimState extends State<JumlahTim> {
           menuMaxHeight: 200,
           dropdownColor: Colors.white,
           elevation: 8,
-          items: teamsToShow
-              .map((e) => DropdownMenuItem(
-                    value: e,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Text(
-                        '$e Tim',
-                        style: const TextStyle(
-                          color: Color(0xFF444444),
-                          fontSize: 16,
-                          fontFamily: 'Poppins',
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 16,
+            fontFamily: 'Satoshi',
+            fontWeight: FontWeight.w500,
+          ),
+          items: studentCount == null
+              ? []
+              : teamsToShow
+                  .map((e) => DropdownMenuItem(
+                        value: e,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Text(
+                            '$e Tim',
+                            style: const TextStyle(
+                              color: Color(0xFF444444),
+                              fontSize: 16,
+                              fontFamily: 'Satoshi',
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ))
-              .toList(),
-          onChanged: (value) {
-            setState(() {
-              selectedTeamCount = value;
-              if (studentCount == null) {
-                isTeamFilledFirst = true;
-                isStudentFilledFirst = false;
-              } else {
-                // If student count is already filled and exceeds max, start timer
-                if (studentCount! > maxParticipants) {
-                  _startInputTimer();
+                      ))
+                  .toList(),
+          onChanged: studentCount == null
+              ? null
+              : (value) {
+                  setState(() {
+                    selectedTeamCount = value;
+                    print('Selected: $value Tim');
+                  });
+                },
+          onTap: studentCount == null
+              ? () {
+                  _showParticipantFirstPopup();
                 }
-              }
-              print('Selected: $value Tim');
-            });
-          },
-          icon: const Icon(
+              : null,
+          icon: Icon(
             Icons.keyboard_arrow_down,
-            color: Color(0xFF444444),
+            color: studentCount == null
+                ? Colors.grey.shade400
+                : const Color(0xFF444444),
           ),
         ),
       ),
@@ -407,7 +471,7 @@ class JumlahTimState extends State<JumlahTim> {
           decoration: const InputDecoration(
             border: InputBorder.none,
             contentPadding: EdgeInsets.zero,
-            hintText: 'Jumlah Peserta',
+            hintText: 'Total Peserta',
             hintStyle: TextStyle(
               color: Color(0xFF969696),
               fontSize: 16,
@@ -428,25 +492,17 @@ class JumlahTimState extends State<JumlahTim> {
 
                 setState(() {
                   studentCount = newStudentCount;
-                  if (selectedTeamCount == null) {
-                    isStudentFilledFirst = true;
-                    isTeamFilledFirst = false;
-                  } else if (isTeamFilledFirst &&
-                      selectedTeamCount! > newStudentCount) {
-                    // Case 2: Team filled first, but student count is less than team count
-                    int oldTeam = selectedTeamCount!;
-                    int newTeam = _getMaxPossibleTeams(newStudentCount);
-                    selectedTeamCount = newTeam;
-                    _showTeamReducedDialog(oldTeam, newTeam);
-                  } else if (isStudentFilledFirst &&
-                      selectedTeamCount != null &&
-                      selectedTeamCount! > newStudentCount) {
-                    // Reset team selection if it exceeds new student count
-                    selectedTeamCount = null;
+                  // Reset team selection if it exceeds new student count or if filtered teams don't include current selection
+                  if (selectedTeamCount != null) {
+                    List<int> filteredTeams =
+                        _getFilteredTeams(newStudentCount);
+                    if (!filteredTeams.contains(selectedTeamCount)) {
+                      selectedTeamCount = null;
+                    }
                   }
                 });
 
-                // Start timer for max participants validation regardless of order
+                // Start timer for max participants validation
                 _startInputTimer();
 
                 String newValue = '$cleanValue peserta';
@@ -458,8 +514,8 @@ class JumlahTimState extends State<JumlahTim> {
             } else {
               setState(() {
                 studentCount = null;
-                isStudentFilledFirst = false;
-                // Don't reset selectedTeamCount when clearing student count
+                selectedTeamCount =
+                    null; // Reset team selection when participant count is cleared
               });
               _inputTimer?.cancel();
             }

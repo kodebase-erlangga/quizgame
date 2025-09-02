@@ -12,6 +12,9 @@ class SpinNama extends StatefulWidget {
   final bool removeAfterSpin;
   final Function(String)? onNameSelected;
   final Function()? onAllNamesComplete;
+  final Function(String, int, bool)?
+      onQuestionAnswered; // teamName, questionNumber, isCorrect
+  final int? maxQuestions; // Add this parameter for custom question count
 
   const SpinNama({
     super.key,
@@ -21,6 +24,8 @@ class SpinNama extends StatefulWidget {
     this.removeAfterSpin = true,
     this.onNameSelected,
     this.onAllNamesComplete,
+    this.onQuestionAnswered,
+    this.maxQuestions, // Add this parameter
   });
 
   @override
@@ -34,6 +39,7 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
   int? _selectedIndex;
   List<int> _globalAvailableQuestions = [];
   StreamController<int>? _fortuneWheelController;
+  bool _allowAutoSelect = false; // Flag to control auto-select timing
 
   @override
   void initState() {
@@ -43,16 +49,33 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
 
     _globalAvailableQuestions = _generateQuestionsForMode();
 
-    if (_availableNames.length == 1) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          setState(() {
-            _selectedName = _availableNames[0];
-          });
-          _showSingleNamePopupAndContinue();
-        }
-      });
+    print('DEBUG: SpinNama initState');
+    print('DEBUG: Mode: ${widget.mode}');
+    print('DEBUG: Available names: $_availableNames');
+    print('DEBUG: Available questions: $_globalAvailableQuestions');
+    print('DEBUG: removeAfterSpin: ${widget.removeAfterSpin}');
+
+    // Remove auto-select from initState to prevent unwanted popups during transitions
+    // Auto-select will be handled by _checkForAutoSelect() method when appropriate
+
+    // For battle mode, completely disable auto-select to prevent team transition conflicts
+    if (widget.mode == 'battle') {
+      print(
+          'DEBUG: Battle mode - auto-select disabled to prevent transition conflicts');
+      _allowAutoSelect = false;
+      return;
     }
+
+    // Enable auto-select after a delay for non-battle modes
+    int delayMs = 1500;
+    Future.delayed(Duration(milliseconds: delayMs), () {
+      if (mounted && widget.mode != 'battle') {
+        setState(() {
+          _allowAutoSelect = true;
+        });
+        _checkForAutoSelect();
+      }
+    });
   }
 
   @override
@@ -81,23 +104,83 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
   }
 
   void _showNoNamesDialog() {
+    print('DEBUG: _showNoNamesDialog called - triggering team completion');
     if (widget.onAllNamesComplete != null) {
+      // This will trigger team switch in JumlahSoal
       widget.onAllNamesComplete!();
     } else {
+      // Fallback: just pop the current screen
       Navigator.pop(context);
     }
   }
 
   void _showAllQuestionsCompletedDialog() {
+    print('DEBUG: _showAllQuestionsCompletedDialog called');
     if (widget.onAllNamesComplete != null) {
+      // This indicates all teams have completed
       widget.onAllNamesComplete!();
     } else {
+      // Fallback: just pop the current screen
       Navigator.pop(context);
+    }
+  }
+
+  void _checkTeamCompletion() {
+    print('DEBUG: _checkTeamCompletion called');
+    print('DEBUG: Names remaining: ${_availableNames.length}');
+    print('DEBUG: Questions remaining: ${_globalAvailableQuestions.length}');
+    print('DEBUG: removeAfterSpin: ${widget.removeAfterSpin}');
+
+    bool isTeamCompleted = false;
+
+    if (widget.removeAfterSpin) {
+      // Question per student mode: team completed when no names left OR no questions left
+      isTeamCompleted =
+          _availableNames.isEmpty || _globalAvailableQuestions.isEmpty;
+      print('DEBUG: Per student mode - Team completed: $isTeamCompleted');
+    } else {
+      // Standard mode: team completed when no questions left
+      isTeamCompleted = _globalAvailableQuestions.isEmpty;
+      print('DEBUG: Standard mode - Team completed: $isTeamCompleted');
+    }
+
+    if (isTeamCompleted) {
+      print('DEBUG: Team completion detected - calling onAllNamesComplete');
+      _showNoNamesDialog();
+    } else if (_availableNames.isNotEmpty &&
+        _globalAvailableQuestions.isNotEmpty) {
+      // Team can continue - check if we should auto-select
+      _checkForAutoSelect();
+    }
+  }
+
+  void _checkForAutoSelect() {
+    print('DEBUG: _checkForAutoSelect called');
+    print('DEBUG: Available names: ${_availableNames.length}');
+    print('DEBUG: Allow auto-select: $_allowAutoSelect');
+
+    if (_allowAutoSelect &&
+        _availableNames.length == 1 &&
+        _selectedName == null) {
+      print('DEBUG: Auto-selecting last remaining member');
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (mounted && _availableNames.isNotEmpty && _allowAutoSelect) {
+          setState(() {
+            _selectedName = _availableNames[0];
+          });
+          _showSingleNamePopupAndContinue();
+        }
+      });
+    } else if (_availableNames.length > 1) {
+      print('DEBUG: Multiple members available, waiting for spin');
+    } else if (!_allowAutoSelect) {
+      print('DEBUG: Auto-select not allowed yet, waiting...');
     }
   }
 
   List<int> _generateQuestionsForMode() {
     List<int> questions;
+
     if (widget.mode == 'collaboration') {
       if (widget.removeAfterSpin) {
         final totalStudents = widget.availableNames.length;
@@ -106,15 +189,42 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
         questions = List.generate(30, (i) => i + 1);
       }
     } else if (widget.mode == 'battle') {
-      questions = List.generate(30, (i) => i + 1);
+      // For battle mode, questions are managed per team
+      if (widget.removeAfterSpin) {
+        // Question per student mode: each student gets 1 question
+        final totalStudents = widget.availableNames.length;
+        questions = List.generate(totalStudents, (i) => i + 1);
+        print(
+            'DEBUG: Battle mode - Question per student: $totalStudents questions');
+      } else {
+        // Standard mode: use maxQuestions if provided, otherwise default to 30
+        int questionCount = widget.maxQuestions ?? 30;
+        questions = List.generate(questionCount, (i) => i + 1);
+        print('DEBUG: Battle mode - Standard: $questionCount questions');
+      }
     } else {
       questions = List.generate(5, (i) => i + 1);
     }
+
+    print('DEBUG: Generated questions: ${questions.length} total');
     return questions;
   }
 
   void _continueToNextStep() {
+    print('DEBUG: _continueToNextStep - Starting');
+    print('DEBUG: Selected name: $_selectedName');
+    print('DEBUG: Questions available: ${_globalAvailableQuestions.length}');
+    print('DEBUG: Names available: ${_availableNames.length}');
+
     if (_selectedName != null) {
+      // Check if there are still questions available
+      if (_globalAvailableQuestions.isEmpty) {
+        print('DEBUG: No questions available, showing completion dialog');
+        _showAllQuestionsCompletedDialog();
+        return;
+      }
+
+      print('DEBUG: Proceeding to SpinSoal');
       if (widget.mode == 'collaboration' || widget.mode == 'battle') {
         Navigator.push(
           context,
@@ -124,6 +234,18 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
               currentPlayer: _selectedName,
               currentTeam: widget.currentTeam,
               availableQuestions: List.from(_globalAvailableQuestions),
+              onQuestionAnsweredWithNumber: (questionNumber, isCorrect) {
+                print(
+                    'DEBUG: SpinNama received question answered - Number: $questionNumber, Correct: $isCorrect');
+
+                // Immediately call the parent callback for battle mode scoring
+                if (widget.mode == 'battle' &&
+                    widget.onQuestionAnswered != null) {
+                  print('DEBUG: Calling parent onQuestionAnswered callback');
+                  widget.onQuestionAnswered!(
+                      widget.currentTeam ?? '', questionNumber, isCorrect);
+                }
+              },
               onAllQuestionsComplete: () {
                 if (mounted) {
                   Navigator.of(context).pop();
@@ -133,6 +255,9 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
           ),
         ).then((answeredQuestionNumber) {
           if (mounted) {
+            print(
+                'DEBUG: Returned from SpinSoal with answered question: $answeredQuestionNumber');
+
             if (widget.mode == 'collaboration') {
               if (widget.removeAfterSpin) {
                 setState(() {
@@ -154,11 +279,35 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
               }
             } else if (widget.mode == 'battle') {
               setState(() {
+                // Remove name only if removeAfterSpin is true (question per student mode)
+                if (widget.removeAfterSpin) {
+                  print('DEBUG: Battle mode - Removing name: $_selectedName');
+                  _availableNames.remove(_selectedName);
+                } else {
+                  print('DEBUG: Battle mode - Keeping name: $_selectedName');
+                }
                 if (answeredQuestionNumber != null) {
+                  print(
+                      'DEBUG: Battle mode - Removing question: $answeredQuestionNumber');
                   _globalAvailableQuestions.remove(answeredQuestionNumber);
                 }
+                print('DEBUG: Remaining names: $_availableNames');
+                print('DEBUG: Remaining questions: $_globalAvailableQuestions');
                 _selectedName = null;
                 _selectedIndex = null;
+
+                // Reset auto-select flag to prevent immediate popup
+                _allowAutoSelect = false;
+              });
+
+              // Check team completion after a short delay
+              Future.delayed(const Duration(milliseconds: 500), () {
+                if (mounted) {
+                  setState(() {
+                    _allowAutoSelect = true;
+                  });
+                  _checkTeamCompletion();
+                }
               });
             } else {
               if (widget.removeAfterSpin) {
@@ -185,43 +334,19 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
               if (widget.removeAfterSpin) {
                 if (_availableNames.isEmpty) {
                   _showNoNamesDialog();
-                } else if (_availableNames.length == 1) {
-                  Future.delayed(const Duration(milliseconds: 500), () {
-                    if (mounted) {
-                      setState(() {
-                        _selectedName = _availableNames[0];
-                      });
-                      _showSingleNamePopupAndContinue();
-                    }
-                  });
+                } else {
+                  _checkForAutoSelect();
                 }
               } else {
                 if (_globalAvailableQuestions.isEmpty) {
                   _showAllQuestionsCompletedDialog();
-                } else if (_availableNames.length == 1) {
-                  Future.delayed(const Duration(milliseconds: 500), () {
-                    if (mounted) {
-                      setState(() {
-                        _selectedName = _availableNames[0];
-                      });
-                      _showSingleNamePopupAndContinue();
-                    }
-                  });
+                } else {
+                  _checkForAutoSelect();
                 }
               }
             } else if (widget.mode == 'battle') {
-              if (_globalAvailableQuestions.isEmpty) {
-                _showAllQuestionsCompletedDialog();
-              } else if (_availableNames.length == 1) {
-                Future.delayed(const Duration(milliseconds: 500), () {
-                  if (mounted) {
-                    setState(() {
-                      _selectedName = _availableNames[0];
-                    });
-                    _showSingleNamePopupAndContinue();
-                  }
-                });
-              }
+              // Use centralized team completion check
+              _checkTeamCompletion();
             } else {
               if (_availableNames.isEmpty) {
                 _showNoNamesDialog();
@@ -248,6 +373,10 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
 
   void _showSingleNamePopupAndContinue() async {
     if (_selectedName != null) {
+      print(
+          'DEBUG: _showSingleNamePopupAndContinue - Starting with $_selectedName');
+      print('DEBUG: Questions available: ${_globalAvailableQuestions.length}');
+
       // Show popup for single name
       await NamePopup.show(
         context,
@@ -255,6 +384,8 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
         autoClose: true,
         autoCloseDuration: const Duration(seconds: 3),
       );
+
+      print('DEBUG: Popup closed, continuing to next step');
 
       // Continue to next step after popup
       if (mounted) {
@@ -457,6 +588,63 @@ class _SpinNamaState extends State<SpinNama> with TickerProviderStateMixin {
 
     if (_availableNames.length == 1) {
       final colorIndex = 0;
+
+      // For battle mode, show a manual button instead of auto-triggering
+      if (widget.mode == 'battle') {
+        return Container(
+          width: 250,
+          height: 250,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: wheelColors[colorIndex],
+            border: Border.all(color: Colors.white, width: 4),
+          ),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  _availableNames[0],
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    fontFamily: 'Poppins',
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 15),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _selectedName = _availableNames[0];
+                    });
+                    _continueToNextStep();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: wheelColors[colorIndex],
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  child: const Text(
+                    'Pilih',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+
+      // Original single name display for non-battle modes
       return Container(
         width: 250,
         height: 250,
