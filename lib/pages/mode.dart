@@ -5,6 +5,7 @@ import 'package:quizgame/pages/kuis/hasil/hasil_battle.dart';
 import 'package:quizgame/pages/kuis/hasil/hasil_kolaborasi.dart';
 import 'package:quizgame/pages/mode/battle/battle_new/jumlahSoal.dart';
 import 'package:quizgame/pages/mode/battle/battle_new/jumlah_tim.dart';
+import 'package:quizgame/pages/mode/collaboration/anggotaTim.dart';
 // import 'package:quizgame/pages/mode/battle/home_battle.dart';
 import 'package:quizgame/pages/mode/collaboration/teamName.dart';
 import 'package:quizgame/pages/mode/single/home_single.dart';
@@ -199,7 +200,7 @@ class ModePermainan extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 // builder: (context) => const HomeColaboration(),
-                                builder: (context) => HasilKolaborasi(),
+                                builder: (context) => TeamPlayer(),
                               ),
                             );
                           },

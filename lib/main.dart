@@ -4,7 +4,7 @@ import 'package:quizgame/pages/mode.dart';
 import 'package:quizgame/utils/quiz_calculator.dart';
 import 'pages/kuis/hasil/hasil_single.dart';
 import 'pages/kuis/hasil/hasil_colaboration.dart';
-import 'pages/kuis/hasil/hasil_battleXX.dart';
+// import 'pages/kuis/hasil/hasil_battleXX.dart';
 
 void main() {
   runApp(const MyApp());
